@@ -1,0 +1,1085 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Il Mondo in Numeri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* Idea: un palco nero-inchiostro dove la persona diventa numeri, poi una scia di luce, poi un'arpa.
+   Tre materie, tre colori: Informatica = ciano, TPSIT = ambra, Sistemi e reti = viola. */
+:root {
+  --ink: #070b14;
+  --ink-2: #0d1424;
+  --line: #22304f;
+  --text: #e9f1ff;
+  --dim: #9db0cf;
+  --info: #4fd8ff;
+  --tpsit: #ffb24a;
+  --reti: #b98bff;
+  --display: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--ink); color: var(--text); font-family: var(--display); overflow: hidden; }
+#stage { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--ink); }
+#c { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+
+#nav { position: absolute; top: 0; left: 0; right: 0; z-index: 5; display: flex; gap: 6px; padding: 10px 16px 0; background: linear-gradient(180deg, rgba(7,11,20,.95), rgba(7,11,20,0)); }
+.tab { flex: 1 1 0; min-width: 0; text-align: left; font: 700 clamp(10px, 1.2vw, 13px)/1.1 var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--dim); background: transparent; border: 0; border-bottom: 3px solid var(--line); border-radius: 0; padding: 10px 2px 9px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tab.info { border-bottom-color: rgba(79,216,255,.4); }
+.tab.tpsit { border-bottom-color: rgba(255,178,74,.4); }
+.tab.reti { border-bottom-color: rgba(185,139,255,.4); }
+.tab:hover { color: var(--text); }
+.tab[aria-selected="true"] { color: var(--text); }
+.tab.info[aria-selected="true"] { border-bottom-color: var(--info); }
+.tab.tpsit[aria-selected="true"] { border-bottom-color: var(--tpsit); }
+.tab.reti[aria-selected="true"] { border-bottom-color: var(--reti); }
+.tab[aria-selected="true"]:not(.info):not(.tpsit):not(.reti) { border-bottom-color: var(--text); }
+.tab:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+
+#caption { position: absolute; left: 0; top: 52px; z-index: 2; padding: 22px 16px 44px; max-width: min(44rem, 100%); box-sizing: border-box; pointer-events: none;
+  background: linear-gradient(90deg, rgba(7,11,20,.93) 0%, rgba(7,11,20,.74) 72%, rgba(7,11,20,0) 100%); }
+#caption .fade { animation: rise .45s ease-out; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+#caption h1 { margin: 0; font-weight: 700; font-size: clamp(1.3rem, 3.1vw, 2.5rem); line-height: 1.06; letter-spacing: -.01em; text-wrap: balance; }
+#caption p { margin: 10px 0 0; font-size: clamp(.92rem, 1.45vw, 1.2rem); line-height: 1.38; color: var(--dim); max-width: 38em; text-wrap: pretty; }
+#caption p.nota { font: 400 clamp(11px, 1.15vw, 14px)/1.5 var(--mono); color: var(--text); max-width: 46em; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.tag { font: 700 clamp(11px, 1.2vw, 14px)/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); padding: 7px 10px; border-radius: 4px; }
+.tag.info { background: var(--info); }
+.tag.tpsit { background: var(--tpsit); }
+.tag.reti { background: var(--reti); }
+
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; font: 700 clamp(11px, 1.2vw, 14px)/1.2 var(--mono); }
+.flow span { border: 1px solid var(--line); background: var(--ink-2); color: var(--dim); padding: 8px 10px; border-radius: 6px; letter-spacing: .04em; text-transform: uppercase; transition: color .12s, border-color .12s, background .12s; }
+.flow span.on { color: var(--ink); background: var(--tpsit); border-color: var(--tpsit); }
+.flow i { color: var(--dim); font-style: normal; }
+
+#rules, #netctl { position: absolute; right: 16px; top: 50%; transform: translateY(-46%); width: min(31rem, 46vw); z-index: 3; background: rgba(13,20,36,.95); border: 1px solid var(--line); border-radius: 12px; padding: 18px; box-sizing: border-box; }
+#rules .cap, #netctl .cap { font: 700 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); margin-bottom: 14px; }
+.rule { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.kw { align-self: flex-start; font: 700 12px/1 var(--mono); letter-spacing: .08em; color: var(--ink); background: var(--info); padding: 6px 9px; border-radius: 4px; }
+.blk { font-size: clamp(1rem, 1.5vw, 1.25rem); font-weight: 700; }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.opts button { font: 700 clamp(12px, 1.3vw, 15px)/1 var(--mono); color: var(--text); background: var(--ink); border: 2px solid var(--line); border-radius: 8px; padding: 11px 14px; cursor: pointer; }
+.opts button:hover { border-color: var(--info); }
+.opts button[aria-pressed="true"] { background: var(--info); color: var(--ink); border-color: var(--info); }
+.opts button:focus-visible, button.btn:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+#rules .small { margin-top: 2px; }
+#real { margin: 12px 0 0; padding: 12px; background: var(--ink); border-radius: 8px; border: 1px solid var(--line); font: 400 clamp(11px, 1.3vw, 15px)/1.6 var(--mono); color: var(--info); white-space: pre-wrap; }
+#rules .note { margin: 12px 0 0; font-size: clamp(.85rem, 1.2vw, 1rem); color: var(--dim); }
+
+#final { position: absolute; inset: 0; z-index: 4; display: flex; align-items: center; justify-content: center; padding: 64px 16px 64px; box-sizing: border-box; background: rgba(7,11,20,.88); overflow: auto; }
+#final .card { width: min(66rem, 100%); }
+#final h2 { margin: 0 0 6px; font-weight: 700; font-size: clamp(1.7rem, 4.8vw, 3.6rem); line-height: 1.04; text-wrap: balance; }
+#final .lead { margin: 0 0 22px; color: var(--dim); font-size: clamp(1rem, 1.8vw, 1.4rem); max-width: 40em; text-wrap: pretty; }
+.chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.chip { border: 1px solid var(--line); border-top-width: 5px; background: var(--ink-2); border-radius: 8px; padding: 16px; min-width: 0; }
+.chip.info { border-top-color: var(--info); }
+.chip.tpsit { border-top-color: var(--tpsit); }
+.chip.reti { border-top-color: var(--reti); }
+.chip b { display: block; font: 700 clamp(14px, 1.7vw, 20px)/1.2 var(--mono); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 6px; }
+.chip.info b { color: var(--info); } .chip.tpsit b { color: var(--tpsit); } .chip.reti b { color: var(--reti); }
+.chip em { display: block; font-style: normal; font-size: clamp(.9rem, 1.35vw, 1.1rem); font-weight: 700; margin-bottom: 8px; }
+.chip span { display: block; font-size: clamp(.88rem, 1.3vw, 1.05rem); line-height: 1.4; color: var(--dim); }
+#final .sig { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+#final .sig strong { font: 700 clamp(12px, 1.4vw, 16px)/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--info); }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; }
+button.btn { font: 700 14px/1 var(--mono); letter-spacing: .04em; color: var(--text); background: var(--ink-2); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; cursor: pointer; }
+button.btn:hover { border-color: var(--info); }
+button.btn.main { background: var(--tpsit); color: var(--ink); border-color: var(--tpsit); }
+button.btn.main:hover { background: #ffc477; }
+button.btn.small { padding: 9px 12px; font-size: 12px; }
+
+#intro { position: absolute; inset: 0; z-index: 7; display: flex; align-items: center; justify-content: center; padding: 24px 16px; box-sizing: border-box; background: radial-gradient(120% 90% at 20% 10%, #12203d 0%, var(--ink) 60%); overflow: auto; }
+#intro .card { width: min(46rem, 100%); }
+#intro .kick { font: 700 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--info); margin-bottom: 18px; }
+#intro h1 { margin: 0; font-weight: 700; font-size: clamp(2.4rem, 8vw, 5.6rem); line-height: .98; letter-spacing: -.02em; text-wrap: balance; }
+#intro p { margin: 18px 0 26px; font-size: clamp(1.05rem, 2vw, 1.5rem); line-height: 1.35; color: var(--dim); max-width: 32em; text-wrap: pretty; }
+#intro .keys { margin-top: 26px; font: 400 12px/1.8 var(--mono); color: var(--dim); }
+#intro .keys kbd { font: 700 12px var(--mono); color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; background: var(--ink-2); }
+
+#camhelp { position: absolute; inset: 0; z-index: 8; display: flex; align-items: center; justify-content: center; padding: 24px 16px; box-sizing: border-box; background: rgba(7,11,20,.92); overflow: auto; }
+#camhelp .card { width: min(40rem, 100%); background: var(--ink-2); border: 1px solid var(--line); border-radius: 12px; padding: 22px; box-sizing: border-box; }
+#camhelp h2 { margin: 0 0 10px; font-size: clamp(1.4rem, 3vw, 2rem); }
+#camhelp p, #camhelp li { font-size: clamp(.95rem, 1.5vw, 1.1rem); line-height: 1.45; color: var(--dim); }
+#camhelp li { margin-bottom: 8px; }
+#camhelp b { color: var(--text); }
+#camhelp code { font: 400 .9em var(--mono); color: var(--info); background: var(--ink); padding: 2px 6px; border-radius: 4px; overflow-wrap: anywhere; }
+#camhelp .btns { margin-top: 16px; }
+
+#status { position: absolute; right: 16px; bottom: 12px; z-index: 5; display: flex; gap: 8px; align-items: center; font: 400 12px/1.3 var(--mono); color: var(--dim); max-width: calc(100% - 32px); flex-wrap: wrap; justify-content: flex-end; }
+#status .btn { padding: 8px 10px; font-size: 12px; }
+#status .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--dim); margin-right: 6px; }
+#status .dot.cam { background: #5dffa0; }
+
+#rules { top: 56px; transform: none; max-height: calc(100% - 112px); overflow: auto; }
+#netctl { top: 58px; transform: none; width: min(25rem, 38vw); }
+#netcount { margin: 8px 0 0; font: 700 clamp(12px, 1.3vw, 15px)/1.4 var(--mono); color: var(--text); }
+#netcount b { color: #ff8b97; }
+#caption.narrow { max-width: min(30rem, 38%); }
+#cap-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+#cap-tags { display: contents; }
+#cap-btn { pointer-events: auto; }
+#cap-btn .btn { font-size: clamp(12px, 1.3vw, 15px); padding: 11px 16px; }
+button.btn.danger { background: #ff5d6c; color: #1a0509; border-color: #ff5d6c; }
+button.btn.ok { background: #5dffa0; color: #04170c; border-color: #5dffa0; }
+.opts.notes button { min-width: 3.1em; padding: 10px 6px; border-bottom-width: 5px; }
+.rl { display: flex; justify-content: space-between; font: 400 12px/1 var(--mono); color: var(--dim); margin-top: 6px; }
+#rules input[type=range] { width: 100%; accent-color: var(--info); height: 28px; margin: 0; }
+#netctl .kw { background: var(--reti); }
+#netctl .opts button:hover { border-color: var(--reti); }
+#netctl .opts button[aria-pressed="true"] { background: var(--reti); border-color: var(--reti); color: var(--ink); }
+#netctl .btns { margin-top: 4px; }
+#netmsg { min-height: 3.2em; }
+#netmsg.bad { color: #ff8b97; }
+#netmsg.good { color: #5dffa0; }
+@media (max-width: 700px) {
+  #rules, #netctl { top: auto; bottom: 52px; right: 16px; left: 16px; transform: none; width: auto; max-height: 38%; overflow: auto; padding: 12px; }
+  #rules { max-height: 46%; }
+  #caption.narrow { max-width: 100%; }
+  .chips { grid-template-columns: minmax(0, 1fr); }
+  #caption { max-width: 100%; }
+  .tab .n { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { #caption .fade { animation: none; } .flow span { transition: none; } }
+</style>
+
+<div id="stage">
+  <canvas id="c"></canvas>
+
+  <nav id="nav" role="tablist" aria-label="Scene" hidden></nav>
+
+  <div id="caption" hidden>
+    <div class="fade" id="capin">
+      <h1 id="cap-h"></h1>
+      <p id="cap-p"></p>
+      <p class="nota" id="cap-n"></p>
+      <div class="flow" id="flow" hidden>
+        <span id="f1">1 · VEDE: la camera guarda</span><i>→</i><span id="f2">2 · DECIDE: «quale corda?»</span><i>→</i><span id="f3">3 · AGISCE: le casse suonano</span>
+      </div>
+      <div id="cap-row"><span id="cap-tags"></span><span id="cap-btn" hidden><button id="b-freeze" type="button" class="btn main">Ferma il tempo</button></span></div>
+    </div>
+  </div>
+
+  <aside id="rules" hidden>
+    <div class="cap">Le regole le scrivi tu</div>
+    <div class="rule"><b class="kw">QUANDO TOCCHI UNA DI QUESTE NOTE</b>
+      <div class="opts notes" id="notes"></div></div>
+    <div class="rule"><b class="kw">ALLORA SUONA</b>
+      <div class="opts" data-k="timbre">
+        <button type="button" data-v="arpa" aria-pressed="true">Arpa</button>
+        <button type="button" data-v="campane" aria-pressed="false">Campane</button>
+        <button type="button" data-v="synth" aria-pressed="false">Sintetizzatore</button>
+      </div></div>
+    <div class="rule"><b class="kw">E ANCHE FAI</b>
+      <div class="opts" data-k="fx">
+        <button type="button" data-v="scintille" aria-pressed="true">Scintille</button>
+        <button type="button" data-v="onde" aria-pressed="false">Onde</button>
+        <button type="button" data-v="niente" aria-pressed="false">Niente</button>
+      </div></div>
+    <div class="rule"><b class="kw">RITMO</b>
+      <div><input type="range" id="tempo" min="60" max="170" value="100" aria-label="Ritmo"><div class="rl"><span>lento</span><span>veloce</span></div></div></div>
+    <button type="button" class="btn small" id="b-real">Come si scrive davvero</button>
+    <pre id="real" hidden></pre>
+    <p class="note">Scrivere le regole che un computer deve seguire si chiama <b>programmare</b>.</p>
+  </aside>
+
+  <aside id="netctl" hidden>
+    <div class="cap">Decidi tu la strada</div>
+    <div class="rule"><b class="kw">MANDA I PACCHETTI</b>
+      <div class="opts" data-k="net">
+        <button type="button" data-v="nord" aria-pressed="true">Tutto a nord</button>
+        <button type="button" data-v="meta" aria-pressed="false">Metà e metà</button>
+        <button type="button" data-v="sud" aria-pressed="false">Tutto a sud</button>
+      </div></div>
+    <div class="btns">
+      <button type="button" class="btn small danger" id="b-fault">Simula un guasto</button>
+      <button type="button" class="btn small" id="b-melody">Manda una melodia</button>
+    </div>
+    <p class="note" id="netmsg"></p>
+    <p id="netcount"></p>
+  </aside>
+
+  <section id="final" hidden>
+    <div class="card">
+      <h2>Tre materie, tre superpoteri.</h2>
+      <p class="lead">Alle superiori di Informatica le impari tutte e tre. Quello che hai appena provato le usa insieme.</p>
+      <div class="chips">
+        <div class="chip info"><b>Informatica</b><em>Dare le regole ai computer.</em><span>Hai scelto tu quali note suonano, con che suono e a che ritmo. Questo è programmare.</span></div>
+        <div class="chip tpsit"><b>TPSIT</b><em>Costruire macchine che vedono, decidono e agiscono.</em><span>L'arpa di luce: una camera che vede, un computer che decide, delle casse che suonano. Come un robot.</span></div>
+        <div class="chip reti"><b>Sistemi e reti</b><em>Far viaggiare i dati e scegliere la strada.</em><span>Le tue note sono arrivate a New York. E se un cavo si rompe, ne trovi un altro.</span></div>
+      </div>
+      <div class="sig">
+        <strong id="sigtext"></strong>
+        <div class="btns">
+          <button id="b-again" type="button" class="btn">Torna all'inizio</button>
+          <button id="b-play" type="button" class="btn main">Torna a suonare</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="camhelp" hidden>
+    <div class="card">
+      <h2>La camera non parte</h2>
+      <p id="camwhy"></p>
+      <ol id="camsteps"></ol>
+      <div class="btns">
+        <button id="b-retry" type="button" class="btn main">Riprova la camera</button>
+        <button id="b-nocam" type="button" class="btn">Continua senza camera</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="status" hidden>
+    <span><span class="dot" id="dot"></span><span id="modetxt"></span></span>
+    <button id="b-cam" type="button" class="btn" hidden>Prova la camera</button>
+    <button id="b-mute" type="button" class="btn">Suono: sì</button>
+  </div>
+
+  <section id="intro">
+    <div class="card">
+      <div class="kick">Dimostrazione interattiva · camera e suono</div>
+      <h1>Il Mondo in Numeri</h1>
+      <p>Un computer non ha occhi né orecchie. Eppure oggi ti vede, ti segue e suona con te. Come fa?</p>
+      <div class="btns">
+        <button id="b-start-cam" type="button" class="btn main">Avvia con la camera</button>
+        <button id="b-start-nocam" type="button" class="btn">Avvia senza camera</button>
+      </div>
+      <div class="keys">
+        Scegli le scene in alto, oppure con i tasti <kbd>1</kbd>–<kbd>6</kbd> e le frecce <kbd>←</kbd> <kbd>→</kbd> · <kbd>M</kbd> suono · <kbd>F</kbd> schermo intero
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---- Cose che chi presenta puo' cambiare ---- */
+  var SUBJ = { info: 'Informatica', tpsit: 'TPSIT', reti: 'Sistemi e reti' };
+  var CFG = {
+    firma: 'Informatica · IIS Copernico-Carpeggiani, Ferrara',
+    scene: [
+      { id: 'numeri', nome: 'Numeri', mat: ['info'],
+        titolo: 'Per il computer, tu sei una griglia di numeri.',
+        sotto: 'Muovi il mouse a destra e a sinistra: da una parte vedi l’immagine vera, dall’altra come la vede lui. Ogni puntino è un numero: 0 è buio, 9 è luce.',
+        nota: '' },
+      { id: 'diff', nome: 'Confronto', mat: ['info'],
+        titolo: 'Come capisce che ti muovi?',
+        sotto: 'Confronta due foto: i puntini che sono diversi si accendono. Premi «Ferma il tempo» e contali.',
+        nota: '' },
+      { id: 'arpa', nome: 'Arpa', mat: ['tpsit'], flow: true,
+        titolo: 'Un’arpa invisibile.',
+        sotto: 'Muovi le mani davanti alla camera: ogni corda di luce è una nota. Suoni senza toccare niente.',
+        nota: 'Come un portiere: vede il tiro, decide dove tuffarsi, si tuffa. L’arpa fa uguale: la camera vede, il computer decide, le casse suonano. Costruire macchine così è TPSIT.' },
+      { id: 'regole', nome: 'Regole', mat: ['info'],
+        titolo: 'Il computer fa solo quello che gli dici.',
+        sotto: 'Spegni delle note, cambia il suono, rallenta o accelera. Intanto continua a suonare.',
+        nota: '' },
+      { id: 'rete', nome: 'Rete', mat: ['reti'],
+        titolo: 'Ogni nota viaggia fino a New York. Tu scegli la strada.',
+        sotto: 'La nota parte da te come un pacchetto e suona solo quando arriva. Mandala a nord, a sud, o metà e metà. Poi rompi un cavo!',
+        nota: 'Far viaggiare i dati, e trovare un’altra strada se qualcosa si rompe, è Sistemi e reti. Qui il viaggio è rallentato: in realtà dura meno di un decimo di secondo.' },
+      { id: 'fine', nome: 'Materie', mat: [], titolo: '', sotto: '', nota: '' }
+    ]
+  };
+  // La pentatonica minore di La: qualunque nota suoni, sta bene con le altre.
+  var FREQS = [220, 261.63, 293.66, 329.63, 392, 440, 523.25, 587.33];
+  var NAMES = ['La', 'Do', 'Re', 'Mi', 'Sol', 'La', 'Do', 'Re'];
+  var BPM = 100;
+  function tickMs() { return 60000 / BPM / 4; }     // un "tick" = una semicroma
+  var W = 64, H = 36, COLS = 8, DIFF_THR = 20, PLUCK_MIN = 4;
+
+  /* ---- Elementi ---- */
+  function $(id) { return document.getElementById(id); }
+  var canvas = $('c'), ctx = canvas.getContext('2d');
+  var nav = $('nav'), capEl = $('caption'), capIn = $('capin');
+  var rulesEl = $('rules'), finalEl = $('final'), introEl = $('intro'), statusEl = $('status');
+  var flowEl = $('flow'), helpEl = $('camhelp'), netEl = $('netctl');
+
+  var scene = CFG.scene;
+  var state = 'intro';           // intro | run
+  var cur = 0, muted = false;
+  var choice = { timbre: 'arpa', fx: 'scintille' };
+  var on = [true, true, true, true, true, true, true, true];   // quali note suonano
+  var frozen = false, melody = { seq: [], i: 0 };
+
+  var tabs = scene.map(function (s, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'tab ' + (s.mat[0] || ''); b.setAttribute('role', 'tab');
+    b.innerHTML = '<span class="n">' + (i + 1) + ' </span>' + s.nome;
+    b.addEventListener('click', function () { go(i); });
+    nav.appendChild(b);
+    return b;
+  });
+  $('sigtext').textContent = CFG.firma;
+
+  /* ---- Sorgente video: camera vera oppure "fantasma" mosso dal mouse ---- */
+  var grab = document.createElement('canvas'); grab.width = W; grab.height = H;
+  var gctx = grab.getContext('2d', { willReadFrequently: true });
+  var snapCv = document.createElement('canvas'); snapCv.width = W; snapCv.height = H;
+  var sctx = snapCv.getContext('2d');
+  var tcv = document.createElement('canvas'); tcv.width = W; tcv.height = H;
+  var tctx = tcv.getContext('2d'), timg = tctx.createImageData(W, H);
+  var video = null, mode = 'ghost', camErr = '';
+  var R = new Uint8ClampedArray(W * H), G = new Uint8ClampedArray(W * H), B = new Uint8ClampedArray(W * H);
+  var lum = new Float32Array(W * H), diff = new Float32Array(W * H), snapLum = new Float32Array(W * H), snapDiff = new Float32Array(W * H);
+  var trail = new Float32Array(W * H);
+  var HN = 6, hist = [], hp = 0;
+  for (var hh = 0; hh < HN; hh++) hist.push(new Float32Array(W * H));
+  var changed = 0, snapChanged = 0, snapAt = 0;
+  var pend = new Float32Array(COLS), ypos = new Float32Array(COLS), cool = new Int16Array(COLS), wob = new Float32Array(COLS);
+  var ptr = { x: 0.5, y: 0.5, at: -1e9 }, ghost = { x: 0.5, y: 0.5, x2: 0.3, y2: 0.6 };
+  var hueRGB = [];
+  (function () {
+    function hsl(h, s, l) {
+      s /= 100; l /= 100; var k = function (n) { return (n + h / 30) % 12; }, a = s * Math.min(l, 1 - l);
+      var f = function (n) { return l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))); };
+      return [Math.round(255 * f(0)), Math.round(255 * f(8)), Math.round(255 * f(4))];
+    }
+    for (var x = 0; x < W; x++) hueRGB.push(hsl(190 + 150 * x / W, 100, 62));
+  })();
+  function stringColor(c, l) { return 'hsl(' + Math.round(190 + 150 * (c + 0.5) / COLS) + ',100%,' + (l || 66) + '%)'; }
+
+  function withTimeout(p, ms) {
+    return new Promise(function (res, rej) {
+      var to = setTimeout(function () { rej({ name: 'Timeout' }); }, ms);
+      p.then(function (v) { clearTimeout(to); res(v); }, function (e) { clearTimeout(to); rej(e); });
+    });
+  }
+  function startCamera() {
+    camErr = '';
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      mode = 'ghost'; camErr = window.isSecureContext === false ? 'SecureContext' : 'NoDevices'; return Promise.resolve(false);
+    }
+    var constraints;
+    try { constraints = navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 640 }, height: { ideal: 360 }, facingMode: 'user' }, audio: false }); }
+    catch (e) { mode = 'ghost'; camErr = (e && e.name) || 'Errore'; return Promise.resolve(false); }
+    return withTimeout(constraints, 20000)
+      .then(function (stream) {
+        video = document.createElement('video');
+        video.muted = true; video.playsInline = true; video.srcObject = stream;
+        return video.play();
+      })
+      .then(function () { mode = 'camera'; return true; })
+      .catch(function (e) { mode = 'ghost'; video = null; camErr = (e && e.name) || 'Errore'; return false; });
+  }
+
+  function drawGhost(now) {
+    var active = now - ptr.at < 2500, px, py;
+    if (active) { px = ptr.x; py = ptr.y; }
+    else { px = 0.5 + 0.34 * Math.sin(now / 1350); py = 0.5 + 0.26 * Math.sin(now / 900 + 1); }
+    ghost.x += (px - ghost.x) * 0.35; ghost.y += (py - ghost.y) * 0.35;
+    ghost.x2 += ((0.5 + 0.40 * Math.cos(now / 2100)) - ghost.x2) * 0.2;
+    ghost.y2 += ((0.5 + 0.30 * Math.sin(now / 1700)) - ghost.y2) * 0.2;
+    gctx.fillStyle = 'rgb(16,20,30)'; gctx.fillRect(0, 0, W, H);
+    function blob(x, y, r, c0, c1) {
+      var g = gctx.createRadialGradient(x * W, y * H, 0, x * W, y * H, r);
+      g.addColorStop(0, c0); g.addColorStop(1, c1);
+      gctx.fillStyle = g; gctx.beginPath(); gctx.arc(x * W, y * H, r, 0, 6.2832); gctx.fill();
+    }
+    blob(ghost.x2, ghost.y2, 5, 'rgb(150,175,255)', 'rgb(70,90,200)');
+    blob(ghost.x, ghost.y, 7.5, 'rgb(255,240,215)', 'rgb(190,110,60)');
+  }
+
+  // ritaglio "cover" 16:9 della camera, per non deformare
+  function cover(vw, vh, tw, th) {
+    var ta = tw / th, va = vw / vh, sx = 0, sy = 0, sw = vw, sh = vh;
+    if (va > ta) { sw = vh * ta; sx = (vw - sw) / 2; } else { sh = vw / ta; sy = (vh - sh) / 2; }
+    return [sx, sy, sw, sh];
+  }
+
+  function sample(now) {
+    if (mode === 'camera' && video && video.readyState >= 2 && video.videoWidth) {
+      var cv = cover(video.videoWidth, video.videoHeight, W, H);
+      gctx.save(); gctx.translate(W, 0); gctx.scale(-1, 1);
+      gctx.drawImage(video, cv[0], cv[1], cv[2], cv[3], 0, 0, W, H); gctx.restore();
+    } else {
+      drawGhost(now);
+    }
+    var d = gctx.getImageData(0, 0, W, H).data, n = W * H, i, k;
+    changed = 0; snapChanged = 0;
+    var cnt = new Int16Array(COLS), ysum = new Float32Array(COLS);
+    var hcur = hist[hp], old = hist[(hp + 1) % HN];
+    for (i = 0; i < n; i++) {
+      k = i * 4;
+      var r = d[k], g = d[k + 1], b = d[k + 2];
+      R[i] = r; G[i] = g; B[i] = b;
+      var l = 0.299 * r + 0.587 * g + 0.114 * b;
+      lum[i] = l;
+      var df = Math.abs(l - old[i]);
+      diff[i] = df; hcur[i] = l;
+      var sd = Math.abs(l - snapLum[i]);
+      snapDiff[i] = sd; if (sd > DIFF_THR) snapChanged++;
+      var t = trail[i] * 0.9;
+      if (df > DIFF_THR) {
+        changed++;
+        var col = Math.min(COLS - 1, ((i % W) * COLS / W) | 0);
+        cnt[col]++; ysum[col] += (i / W | 0);
+        t = Math.max(t, Math.min(1, 0.45 + (df - DIFF_THR) / 90));
+      }
+      trail[i] = t;
+    }
+    hp = (hp + 1) % HN;
+    for (var c = 0; c < COLS; c++) {
+      if (cnt[c] >= PLUCK_MIN) { pend[c] = Math.max(pend[c], cnt[c]); ypos[c] = ysum[c] / cnt[c]; }
+    }
+    // "foto di prima": una per ogni mezzo secondo
+    if (now - snapAt > 500) { snapAt = now; sctx.drawImage(grab, 0, 0); snapLum.set(lum); }
+    var id = state === 'run' ? scene[cur].id : '';
+    if (flowEl.hidden === false) {
+      $('f1').className = mode === 'camera' || changed > 0 ? 'on' : '';
+      $('f2').className = changed > 0 ? 'on' : '';
+      $('f3').className = now - lastNote < 300 ? 'on' : '';
+    }
+  }
+
+  /* ---- Audio ---- */
+  var ac = null, inst = null, padGain = null, analyser = null, tbuf = null, master = null;
+  var lastNote = -1e9;
+  function initAudio() {
+    if (ac) { if (ac.state === 'suspended') ac.resume(); return; }
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      ac = new AC();
+      master = ac.createGain(); master.gain.value = 1;
+      var comp = ac.createDynamicsCompressor();
+      comp.threshold.value = -20; comp.ratio.value = 4; comp.attack.value = 0.005; comp.release.value = 0.2;
+      analyser = ac.createAnalyser(); analyser.fftSize = 1024; tbuf = new Uint8Array(analyser.fftSize);
+      comp.connect(master); master.connect(analyser); analyser.connect(ac.destination);
+      inst = ac.createGain(); inst.gain.value = 1;
+      var dry = ac.createGain(); dry.gain.value = 0.85;
+      var send = ac.createGain(); send.gain.value = 0.32;
+      var conv = ac.createConvolver();
+      var len = Math.floor(ac.sampleRate * 2.2), ir = ac.createBuffer(2, len, ac.sampleRate);
+      for (var ch = 0; ch < 2; ch++) { var dd = ir.getChannelData(ch); for (var i = 0; i < len; i++) dd[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+      conv.buffer = ir;
+      inst.connect(dry); dry.connect(comp);
+      inst.connect(send); send.connect(conv); conv.connect(comp);
+      // tappeto morbido in La minore: sotto le note, per tenerle insieme
+      padGain = ac.createGain(); padGain.gain.value = 0; padGain.connect(inst);
+      [[110, 0], [164.81, 4], [220, -3], [329.63, 5]].forEach(function (p) {
+        var o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = p[0]; o.detune.value = p[1];
+        var og = ac.createGain(); og.gain.value = p[0] > 300 ? 0.18 : 0.5; o.connect(og); og.connect(padGain); o.start();
+      });
+    } catch (e) { ac = null; }
+  }
+  function setBed(on) {
+    if (!ac || !padGain) return;
+    padGain.gain.setTargetAtTime(on && !muted ? 0.055 : 0, ac.currentTime, 0.5);
+  }
+  function env(g, t, peak, dec) {
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(Math.max(0.0002, peak), t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dec);
+  }
+  function pluckSound(freq, vel, kind, gm) {
+    if (!ac || muted || ac.state !== 'running') return;
+    var t = ac.currentTime + 0.005, g = ac.createGain(), stop;
+    g.connect(inst);
+    if (kind === 'campane') {
+      [[1, 1], [2.76, 0.32], [5.4, 0.12]].forEach(function (p) {
+        var o = ac.createOscillator(), og = ac.createGain(); o.type = 'sine'; o.frequency.value = freq * p[0]; og.gain.value = p[1];
+        o.connect(og); og.connect(g); o.start(t); o.stop(t + 2.6);
+      });
+      env(g, t, (0.07 + 0.10 * vel) * gm, 2.4);
+    } else if (kind === 'synth') {
+      var lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 2;
+      lp.frequency.setValueAtTime(3200, t); lp.frequency.exponentialRampToValueAtTime(500, t + 0.4);
+      lp.connect(g);
+      [-6, 6].forEach(function (c) {
+        var o = ac.createOscillator(); o.type = 'sawtooth'; o.frequency.value = freq; o.detune.value = c;
+        o.connect(lp); o.start(t); o.stop(t + 0.7);
+      });
+      env(g, t, (0.05 + 0.07 * vel) * gm, 0.6);
+    } else { // arpa
+      var lp2 = ac.createBiquadFilter(); lp2.type = 'lowpass'; lp2.frequency.value = 2600; lp2.connect(g);
+      var o1 = ac.createOscillator(); o1.type = 'triangle'; o1.frequency.value = freq;
+      var o2 = ac.createOscillator(); o2.type = 'sine'; o2.frequency.value = freq * 2;
+      var g2 = ac.createGain(); g2.gain.value = 0.25;
+      o1.connect(lp2); o2.connect(g2); g2.connect(lp2);
+      o1.start(t); o2.start(t); o1.stop(t + 1.7); o2.stop(t + 1.7);
+      env(g, t, (0.10 + 0.15 * vel) * gm, 1.5);
+    }
+    lastNote = performance.now();
+  }
+  function kick(t) {
+    var o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(120, t); o.frequency.exponentialRampToValueAtTime(46, t + 0.13);
+    g.gain.setValueAtTime(0.2, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.24);
+    o.connect(g); g.connect(inst); o.start(t); o.stop(t + 0.26);
+  }
+  var noiseBuf = null;
+  function hat(t) {
+    if (!noiseBuf) { noiseBuf = ac.createBuffer(1, Math.floor(ac.sampleRate * 0.06), ac.sampleRate); var d = noiseBuf.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+    var s = ac.createBufferSource(); s.buffer = noiseBuf;
+    var hp2 = ac.createBiquadFilter(); hp2.type = 'highpass'; hp2.frequency.value = 7500;
+    var g = ac.createGain(); g.gain.setValueAtTime(0.035, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+    s.connect(hp2); hp2.connect(g); g.connect(inst); s.start(t);
+  }
+  window.__mondoPeak = function () {
+    if (!analyser) return 0; analyser.getByteTimeDomainData(tbuf);
+    var m = 0; for (var i = 0; i < tbuf.length; i++) m = Math.max(m, Math.abs(tbuf[i] - 128) / 128); return m;
+  };
+
+  /* ---- Effetti, particelle, pacchetti ---- */
+  var parts = [], rings = [], packets = [], sent = 0, arrived = 0, remoteRings = [];
+  function liveScene() { var id = state === 'run' ? scene[cur].id : ''; return id === 'arpa' || id === 'regole' || id === 'rete'; }
+
+  var srcPulse = 0, lastCount = '';
+  function pluck(c, vel, y) {
+    var id = scene[cur].id;
+    wob[c] = 1;
+    if (id === 'rete') { launchPacket(c, vel); srcPulse = 1; return; }   // qui il suono esce solo se il pacchetto arriva
+    pluckSound(FREQS[c], vel, choice.timbre, 1);
+    var x = gx0 + (c + 0.5) * colW(), yy = gy0 + Math.max(2, Math.min(H - 6, y)) * cell;
+    var fx = id === 'regole' ? choice.fx : 'scintille';
+    if (fx === 'scintille') {
+      for (var k = 0; k < 14 + vel * 10; k++) {
+        var a = Math.random() * 6.283, s = (1 + Math.random() * 5) * cell * 0.25;
+        parts.push({ x: x, y: yy, vx: Math.cos(a) * s, vy: Math.sin(a) * s - cell * 0.2, life: 1, c: c });
+      }
+    } else if (fx === 'onde') {
+      rings.push({ x: x, y: yy, r: cell, life: 1, c: c });
+    }
+  }
+
+  // La rete: due strade da Ferrara a New York, ognuna con il suo cavo sotto l'oceano.
+  var NODES = [
+    { n: 'Ferrara · tu', x: 0.08, y: 0.66 }, { n: 'Milano', x: 0.24, y: 0.52 },
+    { n: 'Francoforte', x: 0.42, y: 0.45 }, { n: 'Londra', x: 0.60, y: 0.52 },
+    { n: 'Marsiglia', x: 0.24, y: 0.80 }, { n: 'Lisbona', x: 0.52, y: 0.87 },
+    { n: 'New York', x: 0.91, y: 0.64 }
+  ];
+  var DEST = 6;
+  var LINKS = [
+    { a: 0, b: 1, bend: 1.2 }, { a: 1, b: 2, bend: 1.2 }, { a: 2, b: 3, bend: 1.2 }, { a: 3, b: 6, bend: -4, atl: 'cavo sotto l’oceano' },
+    { a: 0, b: 4, bend: -1.2 }, { a: 4, b: 5, bend: -1.6 }, { a: 5, b: 6, bend: -5, atl: 'altro cavo sotto l’oceano' }
+  ];
+  var ROUTES = [[0, 1, 2, 3], [4, 5, 6]];
+  var CUT = [2, 5];
+  var CUTTXT = ['Un escavatore ha tagliato il cavo tra Francoforte e Londra!', 'Una nave ha tagliato il cavo tra Marsiglia e Lisbona!'];
+  var net = { mode: 'nord', broken: -1, alt: 0, lost: 0, heat: new Float32Array(LINKS.length) };
+  function launchPacket(c, vel) {
+    if (packets.length >= 40) return;
+    var r = net.mode === 'nord' ? 0 : net.mode === 'sud' ? 1 : (net.alt ^= 1);
+    packets.push({ c: c, vel: vel, r: r, s: 0 }); sent++;
+  }
+  function nodePos(k) { return { x: gx0 + NODES[k].x * cell * W, y: gy0 + NODES[k].y * cell * H }; }
+  function linkCtl(L) { var A = nodePos(L.a), B = nodePos(L.b); return { A: A, B: B, cx: (A.x + B.x) / 2, cy: (A.y + B.y) / 2 - cell * L.bend }; }
+  function pathPoint(r, s) {
+    var route = ROUTES[r], n = route.length, f = Math.max(0, Math.min(n - 0.0001, s)), k = Math.floor(f), u = f - k;
+    var g = linkCtl(LINKS[route[k]]);
+    return { x: (1 - u) * (1 - u) * g.A.x + 2 * (1 - u) * u * g.cx + u * u * g.B.x, y: (1 - u) * (1 - u) * g.A.y + 2 * (1 - u) * u * g.cy + u * u * g.B.y };
+  }
+  function netMsg() {
+    var el = $('netmsg'), cls = '', t;
+    if (net.broken < 0) { t = 'Tutto funziona: ogni nota arriva a New York e suona là.'; cls = 'good'; }
+    else {
+      var r = net.broken === CUT[0] ? 0 : 1, using = net.mode === 'meta' ? 'both' : (net.mode === 'nord' ? 0 : 1);
+      if (using === 'both') { t = CUTTXT[r] + ' Metà dei pacchetti si perde. Mandali tutti dall’altra parte!'; cls = 'bad'; }
+      else if (using === r) { t = CUTTXT[r] + ' I pacchetti si perdono. Cambia strada!'; cls = 'bad'; }
+      else { t = 'Hai ricablato: i pacchetti passano dall’altra strada e arrivano di nuovo.'; cls = 'good'; }
+    }
+    el.textContent = t; el.className = 'note ' + cls; el.id = 'netmsg';
+    $('b-fault').textContent = net.broken < 0 ? 'Simula un guasto' : 'Ripara il cavo';
+    $('b-fault').className = 'btn small ' + (net.broken < 0 ? 'danger' : 'ok');
+  }
+  function refreshNet() {
+    var bs = netEl.querySelectorAll('.opts button');
+    for (var i = 0; i < bs.length; i++) bs[i].setAttribute('aria-pressed', String(bs[i].getAttribute('data-v') === net.mode));
+    netMsg();
+  }
+
+  /* ---- Disegno ---- */
+  var cw = 0, ch = 0, cell = 10, gx0 = 0, gy0 = 0, dpr = 1;
+  function colW() { return cell * W / COLS; }
+  function resize() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    var r = canvas.getBoundingClientRect();
+    cw = Math.max(2, Math.round(r.width * dpr)); ch = Math.max(2, Math.round(r.height * dpr));
+    canvas.width = cw; canvas.height = ch;
+    cell = Math.min(cw / W, ch / H);
+    gx0 = (cw - cell * W) / 2; gy0 = (ch - cell * H) / 2;
+  }
+  window.addEventListener('resize', resize);
+
+  var MONO = '"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace';
+  var DIG = [];
+  for (var q = 0; q < 10; q++) DIG.push('rgba(79,216,255,' + (0.25 + 0.075 * q).toFixed(3) + ')');
+  var DIFFC = [];
+  for (var u = 0; u < 16; u++) DIFFC.push('hsl(' + Math.round(190 - 40 * u / 15) + ',100%,' + Math.round(38 + 36 * u / 15) + '%)');
+
+  function fmt(n) { return n.toLocaleString('it-IT'); }
+
+  // l'immagine vera, a piena risoluzione se c'e' la camera
+  function drawLive(dx, dy, dw, dh, alpha) {
+    ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.imageSmoothingEnabled = true;
+    if (mode === 'camera' && video && video.readyState >= 2 && video.videoWidth) {
+      var cv = cover(video.videoWidth, video.videoHeight, dw, dh);
+      ctx.translate(dx + dw, dy); ctx.scale(-1, 1);
+      ctx.drawImage(video, cv[0], cv[1], cv[2], cv[3], 0, 0, dw, dh);
+    } else {
+      ctx.drawImage(grab, dx, dy, dw, dh);
+    }
+    ctx.restore();
+  }
+
+  // la scia di luce dei movimenti
+  function drawTrail(dx, dy, dw, dh, gain) {
+    var d = timg.data;
+    for (var i = 0, k = 0; i < W * H; i++, k += 4) {
+      var a = trail[i], rgb = hueRGB[i % W];
+      d[k] = rgb[0]; d[k + 1] = rgb[1]; d[k + 2] = rgb[2]; d[k + 3] = a < 0.03 ? 0 : Math.min(255, a * 255 * (gain || 1.3));
+    }
+    tctx.putImageData(timg, 0, 0);
+    ctx.save(); ctx.imageSmoothingEnabled = true; ctx.globalCompositeOperation = 'lighter';
+    ctx.drawImage(tcv, dx, dy, dw, dh);
+    ctx.globalAlpha = 0.5; var e = dw * 0.012; ctx.drawImage(tcv, dx - e, dy - e, dw + 2 * e, dh + 2 * e);
+    ctx.restore();
+  }
+
+  function sceneNumeri(now) {
+    var gw = cell * W, gh = cell * H;
+    var cx;
+    if (now - ptr.at < 3000) cx = Math.max(0.04, Math.min(0.96, ptr.x));
+    else cx = 0.5 + 0.38 * Math.sin(now / 2300);
+    var cxp = gx0 + cx * gw;
+    // a sinistra: l'immagine vera
+    drawLive(gx0, gy0, gw, gh, 1);
+    // a destra: i numeri
+    ctx.save(); ctx.beginPath(); ctx.rect(cxp, gy0, gx0 + gw - cxp, gh); ctx.clip();
+    ctx.fillStyle = '#070b14'; ctx.fillRect(cxp, gy0, gx0 + gw - cxp, gh);
+    var x0 = Math.max(0, Math.floor((cxp - gx0) / cell));
+    ctx.font = '700 ' + (cell * 0.78).toFixed(1) + 'px ' + MONO; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for (var y = 0; y < H; y++) for (var x = x0; x < W; x++) {
+      var i = y * W + x, dgt = Math.min(9, (lum[i] / 25.6) | 0);
+      ctx.fillStyle = 'rgba(' + R[i] + ',' + G[i] + ',' + B[i] + ',0.22)';
+      ctx.fillRect(gx0 + x * cell, gy0 + y * cell, cell + 0.5, cell + 0.5);
+      ctx.fillStyle = DIG[dgt];
+      ctx.fillText(String(dgt), gx0 + (x + 0.5) * cell, gy0 + (y + 0.55) * cell);
+    }
+    ctx.restore();
+    // maniglia
+    ctx.fillStyle = '#e9f1ff'; ctx.fillRect(cxp - 1.5, gy0, 3, gh);
+    ctx.beginPath(); ctx.arc(cxp, gy0 + gh * 0.5, cell * 1.5, 0, 6.283); ctx.fillStyle = '#070b14'; ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = '#e9f1ff'; ctx.stroke();
+    ctx.fillStyle = '#e9f1ff'; ctx.font = '700 ' + (cell * 1.4).toFixed(1) + 'px ' + MONO; ctx.fillText('↔', cxp, gy0 + gh * 0.5 + cell * 0.1);
+    // etichette
+    var fs = Math.max(11, cell * 0.62);
+    ctx.font = '700 ' + fs.toFixed(1) + 'px ' + MONO; ctx.textBaseline = 'alphabetic';
+    var by = gy0 + gh - cell * 0.9;
+    function label(txt, x, al, col) {
+      ctx.textAlign = al; var w = ctx.measureText(txt).width;
+      ctx.fillStyle = 'rgba(7,11,20,.85)'; ctx.fillRect(al === 'left' ? x - fs * 0.5 : x - w - fs * 0.5, by - fs * 1.15, w + fs, fs * 1.7);
+      ctx.fillStyle = col; ctx.fillText(txt, x, by);
+    }
+    label('COME TI VEDI TU', gx0 + cell, 'left', '#e9f1ff');
+    label('COME TI VEDE IL COMPUTER', gx0 + gw - cell, 'right', '#4fd8ff');
+  }
+
+  var frz = { now: document.createElement('canvas'), prev: document.createElement('canvas'), diff: new Float32Array(W * H), n: 0 };
+  frz.now.width = frz.prev.width = W; frz.now.height = frz.prev.height = H;
+  var fnc = frz.now.getContext('2d', { willReadFrequently: true }), fpc = frz.prev.getContext('2d', { willReadFrequently: true });
+  function setFrozen(f) {
+    if (f) {
+      fnc.drawImage(grab, 0, 0); fpc.drawImage(snapCv, 0, 0);
+      var a = fnc.getImageData(0, 0, W, H).data, b = fpc.getImageData(0, 0, W, H).data, n = 0;
+      for (var i = 0; i < W * H; i++) {
+        var k = i * 4, d = Math.abs((0.299 * a[k] + 0.587 * a[k + 1] + 0.114 * a[k + 2]) - (0.299 * b[k] + 0.587 * b[k + 1] + 0.114 * b[k + 2]));
+        frz.diff[i] = d; if (d > DIFF_THR) n++;
+      }
+      frz.n = n;
+    }
+    frozen = f;
+    $('b-freeze').textContent = f ? 'Riprendi' : 'Ferma il tempo';
+    $('b-freeze').className = 'btn ' + (f ? '' : 'main');
+  }
+
+  function sceneDiff() {
+    var land = cw >= ch * 1.05, pad = cw * 0.025, fs = Math.max(12, Math.min(cw * 0.012, 18));
+    var big = Math.max(20, Math.min(cw * 0.034, 46));
+    var imNow = frozen ? frz.now : grab, imPrev = frozen ? frz.prev : snapCv, dF = frozen ? frz.diff : snapDiff, nCh = frozen ? frz.n : snapChanged;
+    var resW, resH, rx, ry, p1, p2, pw, ph;
+    if (land) {
+      resW = Math.min(cw * 0.58, (ch - 90 - big * 3.4 - fs * 2) * W / H); resH = resW * H / W;
+      rx = cw - pad - resW; ry = Math.max(ch * 0.1 + fs, (ch - (resH + big * 3.2)) / 2 + fs * 1.2);
+      pw = cw * 0.17; ph = pw * H / W;
+      p1 = { x: pad, y: ch * 0.50 }; p2 = { x: pad, y: ch * 0.50 + ph + fs * 3.4 };
+    } else {
+      resW = cw * 0.94; resH = resW * H / W; rx = cw * 0.03;
+      ry = ch - resH - big * 3.2 - 118;
+      pw = cw * 0.44; ph = pw * H / W;
+      p1 = { x: cw * 0.03, y: ry - ph - fs * 3.2 }; p2 = { x: cw * 0.53, y: ry - ph - fs * 3.2 };
+    }
+    ctx.textBaseline = 'alphabetic'; ctx.imageSmoothingEnabled = false;
+    function photo(pt, im, label) {
+      ctx.fillStyle = '#0d1424'; ctx.fillRect(pt.x, pt.y, pw, ph); ctx.drawImage(im, pt.x, pt.y, pw, ph);
+      ctx.strokeStyle = '#22304f'; ctx.lineWidth = 2; ctx.strokeRect(pt.x, pt.y, pw, ph);
+      ctx.font = '700 ' + fs.toFixed(1) + 'px ' + MONO; ctx.textAlign = 'left'; ctx.fillStyle = '#9db0cf'; ctx.fillText(label, pt.x, pt.y - fs * 0.7);
+    }
+    photo(p1, imPrev, 'FOTO DI PRIMA'); photo(p2, imNow, 'FOTO DI ADESSO');
+    // il risultato
+    var cs = resW / W;
+    ctx.fillStyle = '#0d1424'; ctx.fillRect(rx, ry, resW, resH);
+    for (var yy = 0; yy < H; yy++) for (var xx = 0; xx < W; xx++) {
+      var df = dF[yy * W + xx];
+      if (df > DIFF_THR) { ctx.fillStyle = DIFFC[Math.min(15, ((df - DIFF_THR) / 6) | 0)]; ctx.fillRect(rx + xx * cs, ry + yy * cs, cs + 0.5, cs + 0.5); }
+    }
+    if (cs >= 7) {
+      ctx.strokeStyle = 'rgba(157,176,207,.16)'; ctx.lineWidth = 1; ctx.beginPath();
+      for (var gxl = 0; gxl <= W; gxl++) { ctx.moveTo(rx + gxl * cs, ry); ctx.lineTo(rx + gxl * cs, ry + resH); }
+      for (var gyl = 0; gyl <= H; gyl++) { ctx.moveTo(rx, ry + gyl * cs); ctx.lineTo(rx + resW, ry + gyl * cs); }
+      ctx.stroke();
+    }
+    ctx.strokeStyle = frozen ? '#ffb24a' : '#4fd8ff'; ctx.lineWidth = 3; ctx.strokeRect(rx, ry, resW, resH);
+    ctx.font = '700 ' + fs.toFixed(1) + 'px ' + MONO; ctx.textAlign = 'left';
+    ctx.fillStyle = frozen ? '#ffb24a' : '#4fd8ff'; ctx.fillText(frozen ? 'COSA È CAMBIATO · TEMPO FERMO' : 'COSA È CAMBIATO', rx, ry - fs * 0.7);
+    // il conto
+    var by = ry + resH + big * 1.25, num = fmt(nCh);
+    ctx.font = '700 ' + big.toFixed(0) + 'px ' + MONO; ctx.fillStyle = frozen ? '#ffb24a' : '#4fd8ff'; ctx.fillText(num, rx, by);
+    var nw = ctx.measureText(num).width;
+    ctx.font = '700 ' + (big * 0.42).toFixed(1) + 'px ' + MONO; ctx.fillStyle = '#e9f1ff';
+    ctx.fillText('puntini cambiati su ' + fmt(W * H), rx + nw + big * 0.4, by);
+    ctx.font = '400 ' + fs.toFixed(1) + 'px ' + MONO; ctx.fillStyle = '#9db0cf';
+    ctx.fillText(frozen ? 'Ogni quadratino acceso è un puntino diverso tra le due foto.' : 'Premi «Ferma il tempo» per contarli con calma.', rx, by + fs * 1.9);
+    // i segni "meno" e "uguale"
+    ctx.fillStyle = '#e9f1ff';
+    function minus(cx, cy, w) { ctx.fillRect(cx - w / 2, cy - 2.5, w, 5); }
+    function equals(cx, cy, w) { ctx.fillRect(cx - w / 2, cy - 8, w, 5); ctx.fillRect(cx - w / 2, cy + 3, w, 5); }
+    if (land) {
+      minus(p1.x + pw / 2, p1.y + ph + fs * 1.1, pw * 0.16);
+      equals((p1.x + pw + rx) / 2, (p1.y + p2.y + ph) / 2, pw * 0.2);
+    } else {
+      minus(cw / 2, p1.y + ph / 2, pw * 0.12);
+      equals(cw * 0.9, ry - fs * 1.2, pw * 0.1);
+    }
+  }
+
+  function drawHarp(now, small) {
+    var gw = cell * W, gh = cell * H, cwid = colW();
+    // sagoma debole di te, poi la scia di luce
+    drawLive(gx0, gy0, gw, gh, 0.32);
+    ctx.fillStyle = 'rgba(7,11,20,.5)'; ctx.fillRect(gx0, gy0, gw, gh);
+    drawTrail(gx0, gy0, gw, gh, 1.35);
+    // onde
+    rings = rings.filter(function (r) { return r.life > 0.02; });
+    rings.forEach(function (r) {
+      ctx.strokeStyle = stringColor(r.c, 70); ctx.globalAlpha = r.life; ctx.lineWidth = Math.max(2, cell * 0.2);
+      ctx.beginPath(); ctx.arc(r.x, r.y, r.r, 0, 6.283); ctx.stroke(); ctx.globalAlpha = 1;
+      r.r += cell * 0.9; r.life *= 0.93;
+    });
+    // corde
+    var top = gy0 + cell * 1.5, bot = gy0 + gh - cell * 3.2;
+    for (var c = 0; c < COLS; c++) {
+      var x = gx0 + (c + 0.5) * cwid, amp = wob[c] * cell * 0.9;
+      ctx.lineWidth = Math.max(2, cell * (0.12 + 0.18 * wob[c])); ctx.strokeStyle = stringColor(c, 62 + 20 * wob[c]);
+      ctx.shadowColor = stringColor(c, 60); ctx.shadowBlur = 6 + 22 * wob[c];
+      ctx.globalAlpha = (0.5 + 0.5 * wob[c]) * (on[c] ? 1 : 0.18);
+      ctx.beginPath();
+      for (var yv = top; yv <= bot; yv += cell * 0.8) {
+        var u = (yv - top) / (bot - top), xv = x + Math.sin(u * 3.14159) * Math.sin(now / 28 + u * 14) * amp;
+        if (yv === top) ctx.moveTo(xv, yv); else ctx.lineTo(xv, yv);
+      }
+      ctx.stroke(); ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+      wob[c] *= 0.93;
+      // nome della nota
+      ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+      ctx.font = '700 ' + Math.max(12, cell * 0.95).toFixed(1) + 'px ' + MONO;
+      ctx.fillStyle = on[c] ? stringColor(c, wob[c] > 0.3 ? 85 : 66) : '#4a5a7a'; ctx.fillText(on[c] ? NAMES[c] : '×', x, gy0 + gh - cell * 1.6);
+    }
+    // scintille
+    parts = parts.filter(function (p) { return p.life > 0.03; });
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    parts.forEach(function (p) {
+      ctx.fillStyle = stringColor(p.c, 72); ctx.globalAlpha = Math.min(1, p.life * 1.4);
+      var s = Math.max(2, cell * 0.28 * p.life + 1.5);
+      ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
+      p.x += p.vx; p.y += p.vy; p.vy += cell * 0.03; p.life *= 0.95;
+    });
+    ctx.restore(); ctx.globalAlpha = 1;
+  }
+
+  function sceneRete(now) {
+    var gw = cell * W, gh = cell * H, fs = Math.max(11, cell * 0.6), k;
+    ctx.font = '700 ' + fs.toFixed(1) + 'px ' + MONO; ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'center';
+    var inUse = [net.mode !== 'sud', net.mode !== 'nord'];
+    // i cavi
+    for (var li = 0; li < LINKS.length; li++) {
+      var L = LINKS[li], g = linkCtl(L), rt = li < 4 ? 0 : 1, cut = net.broken === li;
+      net.heat[li] *= 0.95;
+      ctx.lineWidth = L.atl ? cell * 0.42 : Math.max(2, cell * 0.16);
+      ctx.strokeStyle = cut ? '#ff5d6c' : 'rgba(185,139,255,' + ((inUse[rt] ? 0.4 : 0.12) + 0.55 * net.heat[li]).toFixed(3) + ')';
+      if (L.atl || cut) ctx.setLineDash([cell * 0.8, cell * 0.5]);
+      ctx.beginPath(); ctx.moveTo(g.A.x, g.A.y); ctx.quadraticCurveTo(g.cx, g.cy, g.B.x, g.B.y); ctx.stroke(); ctx.setLineDash([]);
+      var mx = 0.25 * g.A.x + 0.5 * g.cx + 0.25 * g.B.x, my = 0.25 * g.A.y + 0.5 * g.cy + 0.25 * g.B.y;
+      if (cut) {
+        ctx.strokeStyle = '#ff5d6c'; ctx.lineWidth = cell * 0.4; var q = cell * 1.1;
+        ctx.beginPath(); ctx.moveTo(mx - q, my - q); ctx.lineTo(mx + q, my + q); ctx.moveTo(mx + q, my - q); ctx.lineTo(mx - q, my + q); ctx.stroke();
+        ctx.fillStyle = '#ff8b97'; ctx.fillText('CAVO TAGLIATO', mx, my - q - fs * 0.5);
+      } else if (L.atl) {
+        ctx.fillStyle = inUse[rt] ? '#b98bff' : '#6b5a92'; ctx.fillText(L.atl, mx, my + (L.bend > 0 ? -fs * 0.9 : fs * 1.7));
+      }
+    }
+    // i computer lungo le strade
+    for (k = 0; k < NODES.length; k++) {
+      var p = nodePos(k), r = cell * (k === 0 ? 2.3 : k === DEST ? 1.5 : 0.95), dim = (k >= 1 && k <= 3 && !inUse[0]) || (k >= 4 && k <= 5 && !inUse[1]);
+      ctx.globalAlpha = dim ? 0.4 : 1;
+      ctx.fillStyle = '#070b14'; ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.283); ctx.fill();
+      if (k === 0) {
+        ctx.save(); ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.283); ctx.clip();
+        drawLive(p.x - r, p.y - r, 2 * r, 2 * r, 0.95); ctx.restore();
+        srcPulse *= 0.92;
+        if (srcPulse > 0.03) { ctx.strokeStyle = '#ffb24a'; ctx.globalAlpha = srcPulse; ctx.lineWidth = cell * 0.3; ctx.beginPath(); ctx.arc(p.x, p.y, r + (1 - srcPulse) * cell * 2.5, 0, 6.283); ctx.stroke(); ctx.globalAlpha = 1; }
+      }
+      ctx.lineWidth = 3; ctx.strokeStyle = k === 0 ? '#ffb24a' : '#b98bff'; ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.283); ctx.stroke();
+      ctx.fillStyle = '#e9f1ff'; ctx.fillText(NODES[k].n + (k === DEST ? ' · qui suona' : ''), p.x, k === DEST ? p.y - r - fs * 0.8 : p.y + r + fs * 1.5);
+      ctx.globalAlpha = 1;
+    }
+    // anelli di arrivo
+    remoteRings = remoteRings.filter(function (rr) { return rr.life > 0.03; });
+    remoteRings.forEach(function (rr) {
+      ctx.strokeStyle = stringColor(rr.c, 72); ctx.globalAlpha = rr.life; ctx.lineWidth = cell * 0.3;
+      ctx.beginPath(); ctx.arc(rr.x, rr.y, rr.r, 0, 6.283); ctx.stroke(); ctx.globalAlpha = 1;
+      rr.r += cell * 0.5; rr.life *= 0.94;
+    });
+    // i pacchetti in viaggio
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    packets = packets.filter(function (pk) {
+      var n = ROUTES[pk.r].length; pk.s += n / 85;
+      var kk = Math.min(n - 1, Math.floor(pk.s)); net.heat[ROUTES[pk.r][kk]] = 1;
+      if (net.broken >= 0 && ROUTES[pk.r][kk] === net.broken && pk.s - kk >= 0.5) {
+        net.lost++;
+        var pl = pathPoint(pk.r, pk.s);
+        for (var b = 0; b < 12; b++) { var a = Math.random() * 6.283, sp = (1 + Math.random() * 3) * cell * 0.2; parts.push({ x: pl.x, y: pl.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, c: 0, red: true }); }
+        if (ac && !muted && ac.state === 'running') kick(ac.currentTime + 0.01);
+        return false;
+      }
+      if (pk.s >= n) {
+        arrived++;
+        var e = nodePos(DEST); remoteRings.push({ x: e.x, y: e.y, r: cell, life: 1, c: pk.c });
+        pluckSound(FREQS[pk.c] * 2, pk.vel, 'campane', 0.6);
+        return false;
+      }
+      for (var tr = 0; tr < 5; tr++) {
+        var pt = pathPoint(pk.r, pk.s - tr * 0.1), sz = cell * (0.8 - tr * 0.12);
+        ctx.fillStyle = stringColor(pk.c, 70); ctx.globalAlpha = 1 - tr * 0.2;
+        ctx.fillRect(pt.x - sz / 2, pt.y - sz / 2, sz, sz);
+      }
+      return true;
+    });
+    // scintille rosse dei pacchetti persi
+    parts = parts.filter(function (pp) { return pp.life > 0.03; });
+    parts.forEach(function (pp) {
+      ctx.fillStyle = pp.red ? '#ff5d6c' : stringColor(pp.c, 72); ctx.globalAlpha = Math.min(1, pp.life * 1.4);
+      var sz = Math.max(2, cell * 0.28 * pp.life + 1.5); ctx.fillRect(pp.x - sz / 2, pp.y - sz / 2, sz, sz);
+      pp.x += pp.vx; pp.y += pp.vy; pp.vy += cell * 0.03; pp.life *= 0.95;
+    });
+    ctx.restore(); ctx.globalAlpha = 1;
+    var ct = 'partiti ' + sent + ' · arrivati ' + arrived + (net.lost ? ' · persi ' + net.lost : '');
+    if (ct !== lastCount) { lastCount = ct; $('netcount').textContent = ct; }
+  }
+
+  function render(now) {
+    ctx.fillStyle = '#070b14'; ctx.fillRect(0, 0, cw, ch);
+    if (state === 'intro') { drawLive(gx0, gy0, cell * W, cell * H, 0.12); return; }
+    var id = scene[cur].id;
+    if (id === 'numeri') sceneNumeri(now);
+    else if (id === 'diff') sceneDiff();
+    else if (id === 'arpa' || id === 'regole') drawHarp(now);
+    else if (id === 'rete') sceneRete(now);
+    else drawLive(gx0, gy0, cell * W, cell * H, 0.15);
+  }
+
+  /* ---- Regia ---- */
+  var tickAt = 0, tickN = 0;
+  function tick() {
+    tickN++;
+    var live = liveScene(), i, id = state === 'run' ? scene[cur].id : '';
+    if (live && ac && !muted && ac.state === 'running') {
+      var t = ac.currentTime + 0.02;
+      if (tickN % 4 === 0) kick(t);
+      if (tickN % 4 === 2) hat(t);
+    }
+    if (id === 'rete' && melody.i < melody.seq.length && tickN % 2 === 0) {
+      var mc = melody.seq[melody.i++]; pluck(mc, 0.8, H * 0.5);
+    }
+    var list = [];
+    for (i = 0; i < COLS; i++) if (pend[i] > 0 && cool[i] <= 0 && on[i]) list.push(i);
+    list.sort(function (a, b) { return pend[b] - pend[a]; });
+    if (live) list.slice(0, 3).forEach(function (c) { pluck(c, Math.min(1, pend[c] / 22), ypos[c]); cool[c] = 2; });
+    for (i = 0; i < COLS; i++) { pend[i] = 0; cool[i]--; }
+  }
+
+  function codeText() {
+    var fx = { scintille: 'scintille();', onde: 'onde();', niente: '' }[choice.fx];
+    var nn = NAMES.filter(function (n, i) { return on[i]; }).map(function (n) { return '"' + n + '"'; });
+    return 'note = [' + nn.join(', ') + '];\nritmo = ' + BPM + ';\nif (cordaToccata && note.includes(corda)) {\n  suona("' + { arpa: 'arpa', campane: 'campane', synth: 'sintetizzatore' }[choice.timbre] + '");' + (fx ? '\n  ' + fx : '') + '\n}';
+  }
+  function buildNotes() {
+    var box = $('notes'); box.innerHTML = '';
+    NAMES.forEach(function (n, i) {
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = n; b.setAttribute('data-n', i);
+      b.style.borderBottomColor = stringColor(i, 62); box.appendChild(b);
+    });
+  }
+  function refreshRules() {
+    ['timbre', 'fx'].forEach(function (k) {
+      var bs = rulesEl.querySelectorAll('.opts[data-k="' + k + '"] button');
+      for (var i = 0; i < bs.length; i++) bs[i].setAttribute('aria-pressed', String(bs[i].getAttribute('data-v') === choice[k]));
+    });
+    var nb = $('notes').querySelectorAll('button');
+    for (var j = 0; j < nb.length; j++) nb[j].setAttribute('aria-pressed', String(on[j]));
+    $('real').textContent = codeText();
+  }
+  function taste() { for (var c = 0; c < COLS; c++) if (on[c]) { pend[c] = Math.max(pend[c], 22); ypos[c] = H * 0.5; return; } }
+  function go(i) {
+    i = Math.max(0, Math.min(scene.length - 1, i));
+    state = 'run'; cur = i;
+    var s = scene[i];
+    capEl.hidden = !s.titolo;
+    capEl.classList.toggle('narrow', s.id === 'diff');
+    $('cap-h').textContent = s.titolo;
+    $('cap-p').textContent = s.sotto;
+    $('cap-n').textContent = s.nota || '';
+    $('cap-n').hidden = !s.nota;
+    $('cap-tags').innerHTML = s.mat.map(function (m) { return '<span class="tag ' + m + '">' + SUBJ[m] + '</span>'; }).join('');
+    $('cap-btn').hidden = s.id !== 'diff';
+    setFrozen(false);
+    flowEl.hidden = !s.flow;
+    rulesEl.hidden = s.id !== 'regole';
+    netEl.hidden = s.id !== 'rete';
+    finalEl.hidden = s.id !== 'fine';
+    if (s.id === 'rete') { packets = []; sent = 0; arrived = 0; net.lost = 0; net.broken = -1; net.mode = 'nord'; melody.i = melody.seq.length; refreshNet(); }
+    setBed(s.id === 'arpa' || s.id === 'regole' || s.id === 'rete');
+    capIn.classList.remove('fade'); void capIn.offsetWidth; capIn.classList.add('fade');
+    tabs.forEach(function (b, k) { b.setAttribute('aria-selected', String(k === i)); });
+  }
+
+  function showCamHelp() {
+    var inFrame = false; try { inFrame = window.self !== window.top; } catch (e) { inFrame = true; }
+    var why, steps = [];
+    var server = '<li>Soluzione sicura: apri il <b>Terminale</b>, vai nella cartella del file e scrivi <code>python3 -m http.server 8000</code>. Poi apri in Chrome <code>http://localhost:8000/mondo-in-numeri-locale.html</code>.</li>';
+    if (inFrame) {
+      why = 'Questa pagina è aperta dentro un’altra pagina, e il browser non lascia usare la camera da qui. È normale: succede dal link condiviso.';
+      steps = ['<li>Scarica il file <b>mondo-in-numeri-locale.html</b> e aprilo con <b>Chrome</b> (doppio clic sul file).</li>', server];
+    } else if (camErr === 'NotAllowedError' || camErr === 'SecurityError') {
+      why = 'Il browser non ha il permesso di usare la camera.';
+      steps = ['<li>Nella barra degli indirizzi clicca l’icona della camera (o il lucchetto) e scegli <b>Consenti</b>, poi ricarica la pagina.</li>',
+        '<li>Su Mac: Impostazioni di Sistema → Privacy e sicurezza → <b>Fotocamera</b> e attiva il tuo browser.</li>', server];
+    } else if (camErr === 'NotFoundError' || camErr === 'OverconstrainedError') {
+      why = 'Non trovo nessuna camera collegata a questo computer.';
+      steps = ['<li>Controlla che la camera sia collegata e accesà, poi premi <b>Riprova</b>.</li>'];
+    } else if (camErr === 'NotReadableError') {
+      why = 'La camera è già in uso da un altro programma.';
+      steps = ['<li>Chiudi Zoom, Meet, Teams o altre schede che usano la camera, poi premi <b>Riprova</b>.</li>'];
+    } else if (camErr === 'SecureContext' || window.isSecureContext === false) {
+      why = 'Il browser usa la camera solo da indirizzi sicuri, e questo non lo è.';
+      steps = [server, '<li>Oppure apri il file con <b>Chrome</b> invece di Safari.</li>'];
+    } else {
+      why = 'Il browser ha risposto: “' + (camErr || 'errore sconosciuto') + '”.';
+      steps = ['<li>Prova con <b>Chrome</b> e controlla che la camera funzioni in altri programmi.</li>', server];
+    }
+    $('camwhy').textContent = why; $('camsteps').innerHTML = steps.join('');
+    helpEl.hidden = false;
+  }
+  function updateStatus() {
+    $('dot').className = 'dot' + (mode === 'camera' ? ' cam' : '');
+    $('modetxt').textContent = mode === 'camera' ? 'camera attiva' : 'senza camera: muovi il mouse o il dito, un clic tocca una corda';
+    $('b-cam').hidden = mode === 'camera';
+  }
+  function tryCamera() {
+    startCamera().then(function (ok) { updateStatus(); if (!ok) showCamHelp(); else helpEl.hidden = true; });
+  }
+  function begin(withCam) {
+    initAudio();
+    introEl.hidden = true; nav.hidden = false; statusEl.hidden = false;
+    hist.forEach(function (h) { h.fill(0); });
+    go(0); updateStatus();
+    if (withCam) tryCamera();
+  }
+
+  function frame(now) {
+    sample(now);
+    if (state === 'run' && now >= tickAt) { tick(); tickAt = Math.max(tickAt + tickMs(), now - 200 + tickMs()); }
+    render(now);
+    requestAnimationFrame(frame);
+  }
+
+  /* ---- Comandi ---- */
+  function point(e) {
+    var gx = (e.clientX * dpr - gx0) / (cell * W), gy = (e.clientY * dpr - gy0) / (cell * H);
+    ptr.x = Math.max(0, Math.min(1, gx)); ptr.y = Math.max(0, Math.min(1, gy)); ptr.at = performance.now();
+  }
+  window.addEventListener('pointermove', point);
+  canvas.addEventListener('pointerdown', function (e) {
+    point(e);
+    if (!liveScene()) return;
+    var c = Math.max(0, Math.min(COLS - 1, Math.floor(ptr.x * COLS)));
+    if (!on[c] && scene[cur].id !== 'rete') return;
+    pend[c] = Math.max(pend[c], 22); ypos[c] = ptr.y * H;
+  });
+  window.addEventListener('keydown', function (e) {
+    if (state === 'intro') return;
+    var k = e.key, ae = document.activeElement;
+    if (ae && ae.tagName === 'INPUT') return;
+    if (k === ' ' && scene[cur].id === 'diff' && !(ae && ae.tagName === 'BUTTON')) { e.preventDefault(); setFrozen(!frozen); return; }
+    if (k === 'ArrowRight') go(cur + 1);
+    else if (k === 'ArrowLeft') go(cur - 1);
+    else if (k >= '1' && k <= String(scene.length)) go(+k - 1);
+    else if (k === 'm' || k === 'M') toggleMute();
+    else if (k === 'f' || k === 'F') {
+      try { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(function () {}); } catch (err) {}
+    }
+  });
+  function toggleMute() {
+    muted = !muted; $('b-mute').textContent = 'Suono: ' + (muted ? 'no' : 'sì');
+    setBed(liveScene());
+  }
+  $('b-mute').addEventListener('click', toggleMute);
+  $('b-start-cam').addEventListener('click', function () { begin(true); });
+  $('b-start-nocam').addEventListener('click', function () { begin(false); });
+  $('b-again').addEventListener('click', function () { go(0); });
+  $('b-play').addEventListener('click', function () { go(2); });
+  $('b-cam').addEventListener('click', tryCamera);
+  $('b-retry').addEventListener('click', tryCamera);
+  $('b-nocam').addEventListener('click', function () { helpEl.hidden = true; });
+  $('b-real').addEventListener('click', function () { var r = $('real'); r.hidden = !r.hidden; refreshRules(); });
+  rulesEl.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.opts button') : null;
+    if (!b) return;
+    var n = b.getAttribute('data-n');
+    if (n !== null) {
+      n = +n; on[n] = !on[n];
+      if (!on.some(function (v) { return v; })) on[n] = true;       // almeno una nota deve restare
+      refreshRules(); if (on[n]) { pend[n] = 22; ypos[n] = H * 0.5; }
+      return;
+    }
+    choice[b.parentNode.getAttribute('data-k')] = b.getAttribute('data-v');
+    refreshRules(); taste();
+  });
+  $('tempo').addEventListener('input', function () { BPM = +this.value; refreshRules(); });
+  netEl.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.opts button') : null;
+    if (!b) return;
+    net.mode = b.getAttribute('data-v'); refreshNet();
+  });
+  $('b-fault').addEventListener('click', function () {
+    if (net.broken >= 0) net.broken = -1; else net.broken = CUT[net.mode === 'sud' ? 1 : 0];
+    refreshNet();
+  });
+  $('b-melody').addEventListener('click', function () { melody.seq = [0, 2, 3, 4, 5, 4, 3, 2, 0]; melody.i = 0; });
+  $('b-freeze').addEventListener('click', function () { setFrozen(!frozen); });
+
+  buildNotes();
+  refreshRules();
+  resize();
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body></html>

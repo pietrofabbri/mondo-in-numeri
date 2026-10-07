@@ -1,0 +1,14 @@
+# Il Mondo in Numeri — demo per l'orientamento
+
+Pagina unica (`index.html`), nessuna dipendenza da installare. Pensata per far vedere alle medie, in un minuto,
+come si collegano le tre materie dell'indirizzo Informatica (IIS Copernico-Carpeggiani, Ferrara).
+
+- **Numeri** (Informatica): il computer vede l'immagine come una griglia di numeri.
+- **Confronto** (Informatica): due foto, i puntini diversi si accendono; «Ferma il tempo» li conta.
+- **Arpa** (TPSIT): camera, computer e casse formano una macchina che vede, decide e agisce.
+- **Regole** (Informatica): si scelgono note, suono, effetto e ritmo: programmare.
+- **Rete** (Sistemi e reti): i pacchetti viaggiano fino a New York; si sceglie la strada e si simula un guasto.
+
+Uso: aprire la pagina in Chrome e consentire la camera (serve un indirizzo https o `localhost`).
+Senza camera funziona con mouse o dito. Tasti: `1`-`6` scene, frecce, `M` suono, `F` schermo intero, spazio = ferma il tempo.
+Chi presenta può cambiare la firma e i testi all'inizio dello script (`CFG`).
