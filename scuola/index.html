@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Copernico-Carpeggiani · La scuola</title>
+<meta name="description" content="Una scuola dove si impara facendo: indirizzi, giornata tipo, opportunità e open day dell'IIS Copernico-Carpeggiani di Ferrara.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* Modulo autonomo: nessun file, stile o script in comune con il resto del sito. */
+:root{
+  --ink:#070b14; --ink-2:#0d1424; --ink-3:#131c31; --line:#22304f;
+  --text:#e9f1ff; --dim:#9db0cf;
+  --display:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --c-info:#4fd8ff; --c-ele:#ffd84a; --c-esp:#ff7a59; --c-mec:#9be36b; --c-chi:#5ef0c0;
+  --c-moda:#ff8bd1; --c-quad:#ffb24a; --c-mat:#c7a6ff; --c-ott:#7fb2ff; --c-com:#3a4a6e;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:var(--display);line-height:1.45;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+[hidden]{display:none!important}
+
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.top,section,.hero,.foot,hr.sep{position:relative;z-index:1}
+dialog{z-index:30}
+.card,.chip,.yr,.if,.day,.half,.fact{will-change:transform}
+.card:hover{box-shadow:0 0 0 1px var(--glow,transparent),0 12px 40px -10px var(--glow,transparent)}
+.hero h1 .word{animation:hue 8s linear infinite;background-size:300% 100%}
+@keyframes hue{to{background-position:300% 0}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+/* barra */
+.top{position:sticky;top:0;z-index:20;display:flex;gap:4px;align-items:center;padding:10px 16px;background:linear-gradient(180deg,rgba(7,11,20,.97),rgba(7,11,20,.85));backdrop-filter:blur(6px);border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.top::-webkit-scrollbar{display:none}
+.top .brand{font:700 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-right:10px;white-space:nowrap}
+.top a{font:700 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:9px 10px;border-radius:6px;white-space:nowrap}
+.top a:hover,.top a.on{color:var(--text);background:var(--ink-3)}
+
+section{padding:72px 16px;max-width:1120px;margin:0 auto}
+.kick{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:0 0 14px}
+h1,h2{margin:0;letter-spacing:-.015em;text-wrap:balance}
+h1{font-size:clamp(2.2rem,6.4vw,4.6rem);line-height:1;font-weight:800}
+h2{font-size:clamp(1.7rem,4.2vw,3rem);line-height:1.04;font-weight:800}
+.lead{font-size:clamp(1.05rem,2vw,1.35rem);color:var(--dim);max-width:40em;margin:16px 0 0;text-wrap:pretty}
+.lead b{color:var(--text);font-weight:700}
+hr.sep{border:0;border-top:1px solid var(--line);max-width:1120px;margin:0 auto}
+
+/* hero */
+.hero{min-height:calc(100svh - 50px);display:flex;flex-direction:column;justify-content:center;padding-top:40px}
+.hero h1 span{display:inline-block}
+.hero .word{background:linear-gradient(90deg,var(--c-info),var(--c-mec),var(--c-moda),var(--c-quad),var(--c-info));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 14px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:14px 18px;border-radius:10px;border:2px solid var(--line);background:var(--ink-2);cursor:pointer;text-decoration:none}
+.btn.main{background:var(--text);color:var(--ink);border-color:var(--text)}
+.btn:hover{border-color:var(--text)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:44px}
+.fact{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--ink-2)}
+.fact b{display:block;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1;font-weight:800}
+.fact span{display:block;color:var(--dim);font-size:.95rem;margin-top:6px}
+
+/* quiz */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chip{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:999px;border:2px solid var(--line);background:var(--ink-2);cursor:pointer;font-size:1.02rem;font-weight:500;transition:transform .12s,border-color .12s,background .12s}
+.chip .e{font-size:1.25rem}
+.chip:hover{border-color:var(--dim)}
+.chip[aria-pressed="true"]{background:var(--text);color:var(--ink);border-color:var(--text);transform:translateY(-2px)}
+.match{margin-top:28px;display:grid;gap:10px}
+.mrow{display:grid;grid-template-columns:minmax(150px,240px) 1fr 48px;gap:12px;align-items:center;cursor:pointer;background:none;border:0;padding:4px 0;text-align:left}
+.mrow .n{font-weight:700;font-size:1rem}
+.mrow .bar{height:14px;border-radius:7px;background:var(--ink-3);overflow:hidden}
+.mrow .bar i{display:block;height:100%;width:0;border-radius:7px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.mrow .p{font:700 13px/1 var(--mono);color:var(--dim);text-align:right}
+.mrow:hover .n{text-decoration:underline}
+.hint{font:400 13px/1.5 var(--mono);color:var(--dim);margin-top:16px}
+
+/* mappa dei 5 anni */
+.road{margin-top:30px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.yr{border:2px solid var(--line);border-radius:12px;padding:14px 12px;background:var(--ink-2);cursor:pointer;text-align:left;min-height:96px;display:flex;flex-direction:column;gap:6px;transition:border-color .12s,transform .12s}
+.yr b{font-size:clamp(1.4rem,3vw,2rem);line-height:1;font-weight:800}
+.yr span{font:700 11px/1.2 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.yr[aria-pressed="true"]{border-color:var(--text);transform:translateY(-3px)}
+.yrbox{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:20px;background:var(--ink-2);min-height:120px}
+.yrbox h3{margin:0 0 8px;font-size:1.3rem}
+.yrbox p{margin:0;color:var(--dim);max-width:46em}
+.yrbox ul{margin:10px 0 0;padding-left:18px;color:var(--text)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:30px}
+.half{border:1px solid var(--line);border-radius:14px;padding:22px;background:var(--ink-2)}
+.half h3{margin:0;font-size:1.4rem}
+.half .tagline{font:700 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+.half p{color:var(--dim);margin:10px 0 0}
+
+/* indirizzi */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:30px}
+.card{position:relative;border:2px solid var(--line);border-radius:16px;padding:20px;background:var(--ink-2);cursor:pointer;text-align:left;min-height:220px;display:flex;flex-direction:column;gap:10px;transition:border-color .15s,transform .15s}
+.card:hover{transform:translateY(-3px)}
+.card .obj{font-size:2.4rem;line-height:1}
+.card h3{margin:0;font-size:1.25rem;line-height:1.1}
+.card .where{font:700 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.card p{margin:0;color:var(--dim);font-size:.98rem}
+.card .more{margin-top:auto;font:700 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text)}
+.card.dim{opacity:.35}
+.card.lit{transform:translateY(-3px)}
+
+/* scheda indirizzo */
+dialog{border:1px solid var(--line);border-radius:18px;background:var(--ink-2);color:var(--text);padding:0;width:min(760px,calc(100vw - 24px));max-height:calc(100svh - 24px)}
+dialog::backdrop{background:rgba(3,6,12,.78);backdrop-filter:blur(3px)}
+.dlg{padding:24px}
+.dlg header{display:flex;gap:14px;align-items:flex-start}
+.dlg header .obj{font-size:3rem;line-height:1}
+.dlg h3{margin:0;font-size:clamp(1.5rem,3.4vw,2.2rem);line-height:1.05}
+.dlg .where{font:700 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-top:8px}
+.x{margin-left:auto;background:var(--ink-3);border:1px solid var(--line);border-radius:10px;width:40px;height:40px;cursor:pointer;font-size:1.2rem;flex:none}
+.tabs{display:flex;gap:6px;margin:20px 0 14px;flex-wrap:wrap}
+.tabs button{font:700 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--ink);cursor:pointer;color:var(--dim)}
+.tabs button[aria-selected="true"]{background:var(--text);color:var(--ink);border-color:var(--text)}
+.pane p{margin:0 0 10px;color:var(--text);font-size:1.05rem}
+.pane .say{border-left:4px solid;padding:10px 14px;margin:14px 0 0;background:var(--ink);border-radius:0 10px 10px 0;color:var(--text)}
+.pane ul{margin:6px 0 0;padding-left:18px}
+.pane li{margin:4px 0}
+.dlgnav{display:flex;justify-content:space-between;gap:8px;margin-top:20px;border-top:1px solid var(--line);padding-top:14px}
+
+/* settimana */
+.weekctl{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.weekctl button{font:700 12px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:10px 12px;border-radius:8px;border:2px solid var(--line);background:var(--ink-2);cursor:pointer;color:var(--dim)}
+.weekctl button[aria-pressed="true"]{color:var(--ink);border-color:transparent}
+.week{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:5px;max-width:860px}
+.h{aspect-ratio:1;border-radius:6px;background:var(--c-com);transition:background .35s,transform .35s;position:relative}
+.h.own{transform:scale(1.04)}
+.weeklegend{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.95rem}
+.weeklegend span{display:inline-flex;align-items:center;gap:8px;color:var(--dim)}
+.weeklegend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+.weeklegend b{color:var(--text)}
+.weeksum{margin-top:16px;font-size:1.1rem;max-width:44em}
+.thu{margin-top:22px;border:1px dashed var(--line);border-radius:12px;padding:14px 16px;color:var(--dim);max-width:860px}
+.thu b{color:var(--text)}
+
+/* opportunità */
+.ifs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:26px}
+.if{border:2px solid var(--line);border-radius:14px;padding:16px;background:var(--ink-2);cursor:pointer;text-align:left;font-size:1.05rem;font-weight:700;transition:border-color .12s}
+.if small{display:block;font:400 12px/1.3 var(--mono);color:var(--dim);margin-top:6px;letter-spacing:.02em}
+.if[aria-pressed="true"]{border-color:var(--text);background:var(--ink-3)}
+.ifbox{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:22px;background:var(--ink-2)}
+.ifbox h3{margin:0 0 10px;font-size:1.35rem}
+.ifbox ul{margin:0;padding-left:18px}
+.ifbox li{margin:6px 0}
+.hours{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px}
+.hours div{flex:1 1 200px}
+.hours .lbl{font:700 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.hours .track{height:18px;border-radius:9px;background:var(--ink-3);overflow:hidden}
+.hours .track i{display:block;height:100%;border-radius:9px;background:var(--c-quad);width:0;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.hours .v{font-weight:800;font-size:1.3rem;margin-top:6px}
+
+/* domande */
+.faq{margin-top:26px;display:grid;gap:8px;max-width:860px}
+details{border:1px solid var(--line);border-radius:12px;background:var(--ink-2)}
+summary{cursor:pointer;padding:16px 18px;font-weight:700;font-size:1.08rem;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--mono);color:var(--dim)}
+details[open] summary::after{content:"–"}
+details p{margin:0;padding:0 18px 16px;color:var(--dim);font-size:1.02rem}
+
+/* open day */
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:26px}
+.day{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--ink-2)}
+.day .d{font-size:1.6rem;font-weight:800;line-height:1}
+.day .w{font:700 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+.day .t{margin-top:12px}
+.day .who{display:inline-block;margin-top:10px;font:700 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;border-radius:5px;color:var(--ink)}
+.day.past{opacity:.4}
+.foot{padding:40px 16px 60px;max-width:1120px;margin:0 auto;color:var(--dim);font:400 13px/1.6 var(--mono)}
+
+@media (max-width:760px){
+  section{padding:56px 16px}
+  .road{grid-template-columns:repeat(5,minmax(58px,1fr));overflow-x:auto}
+  .yr{min-height:80px;padding:10px 8px}
+  .two{grid-template-columns:1fr}
+  .mrow{grid-template-columns:minmax(110px,150px) 1fr 40px}
+  .week{grid-template-columns:repeat(8,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<nav class="top" aria-label="Sezioni">
+  <span class="brand">Copernico-Carpeggiani</span>
+  <a href="#cosa-ti-piace">Cosa ti piace</a>
+  <a href="#la-scuola">La scuola</a>
+  <a href="#indirizzi">Indirizzi</a>
+  <a href="#settimana">La settimana</a>
+  <a href="#e-se">E se…</a>
+  <a href="#domande">Domande</a>
+  <a href="#vieni">Vieni a vederci</a>
+</nav>
+
+<header class="section hero" id="top" style="padding:72px 16px;max-width:1120px;margin:0 auto">
+  <p class="kick">IIS Copernico-Carpeggiani · Ferrara</p>
+  <h1>Qui le cose <span class="word">si fanno</span>,<br>non solo si studiano.</h1>
+  <p class="lead">Una scuola con <b>due anime</b>: un Istituto Tecnico e un Istituto Professionale. Laboratori dalla prima settimana, nove strade diverse, e alla fine puoi scegliere se lavorare subito o andare all'università.</p>
+  <div class="cta">
+    <a class="btn main" href="#cosa-ti-piace">Trova la tua strada →</a>
+    <a class="btn" href="#vieni">Date open day</a>
+  </div>
+  <div class="facts" id="facts"></div>
+</header>
+
+<hr class="sep">
+
+<section id="cosa-ti-piace">
+  <p class="kick">01 · Parti da te</p>
+  <h2>Cosa ti piace fare?</h2>
+  <p class="lead">Tocca tutto quello che ti somiglia, anche cose diverse tra loro. Le barre si muovono: ti dicono quali indirizzi parlano la tua lingua. Non è un test, è un punto di partenza.</p>
+  <div class="chips" id="chips"></div>
+  <div class="match" id="match" aria-live="polite"></div>
+  <p class="hint" id="matchhint">Scegli almeno una cosa qui sopra.</p>
+</section>
+
+<hr class="sep">
+
+<section id="la-scuola">
+  <p class="kick">02 · Come funziona</p>
+  <h2>Due scuole in una, cinque anni di strada.</h2>
+  <div class="two">
+    <div class="half">
+      <p class="tagline" style="color:var(--c-info)">ITI · Istituto Tecnico</p>
+      <h3>Teoria e laboratorio, insieme.</h3>
+      <p>Sette indirizzi tecnologici. Studi le materie di tutti (italiano, matematica, inglese, scienze) e in più quelle del tuo indirizzo, in laboratorio. C'è anche un percorso da quattro anni invece di cinque.</p>
+    </div>
+    <div class="half">
+      <p class="tagline" style="color:var(--c-mat)">IPSIA · Istituto Professionale</p>
+      <h3>Mani in pasta, da subito.</h3>
+      <p>Due indirizzi molto pratici: Manutenzione e assistenza tecnica, e Ottico. Più ore in officina e in azienda, per chi vuole un mestiere preciso e lavorare presto.</p>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:34px">Tocca un anno per vedere cosa succede.</p>
+  <div class="road" id="road" role="group" aria-label="Gli anni di scuola"></div>
+  <div class="yrbox" id="yrbox" aria-live="polite"></div>
+</section>
+
+<hr class="sep">
+
+<section id="indirizzi">
+  <p class="kick">03 · Le strade</p>
+  <h2>Nove indirizzi. Ognuno parte da una cosa che usi tutti i giorni.</h2>
+  <p class="lead">Tocca una carta per aprirla: cosa fai, cosa diventi, e la frase da ricordare.</p>
+  <div class="grid" id="grid"></div>
+</section>
+
+<dialog id="dlg" aria-labelledby="dlgt"><div class="dlg" id="dlgbody"></div></dialog>
+
+<hr class="sep">
+
+<section id="settimana">
+  <p class="kick">04 · La tua settimana in prima</p>
+  <h2>32 ore. 25 uguali per tutti, 7 tutte tue.</h2>
+  <p class="lead">Ogni quadratino è un'ora di lezione in una settimana di prima superiore. Quelli scuri sono le materie che fanno tutti. Scegli un indirizzo e guarda quali quadratini si accendono.</p>
+  <div class="weekctl" id="weekctl" role="group" aria-label="Scegli un indirizzo"></div>
+  <div class="week" id="week" aria-hidden="true"></div>
+  <div class="weeklegend" id="weeklegend"></div>
+  <p class="weeksum" id="weeksum"></p>
+  <p class="thu"><b>E il giovedì?</b> Con il «Nuovo tempo scuola», nelle classi prime, seconde e terze dell'ITI e all'IPSIA, la sesta e la settima ora del giovedì sono dedicate ad attività in più, a moduli che cambiano durante l'anno.</p>
+</section>
+
+<hr class="sep">
+
+<section id="e-se">
+  <p class="kick">05 · Non solo lezioni</p>
+  <h2>E se…?</h2>
+  <p class="lead">La scuola non è uguale per tutti, perché tu non sei uguale agli altri. Tocca la frase che ti assomiglia.</p>
+  <div class="ifs" id="ifs" role="group" aria-label="Scegli una situazione"></div>
+  <div class="ifbox" id="ifbox" aria-live="polite"></div>
+</section>
+
+<hr class="sep">
+
+<section id="domande">
+  <p class="kick">06 · Le domande vere</p>
+  <h2>Quello che tutti si chiedono (e non sempre chiedono).</h2>
+  <div class="faq" id="faq"></div>
+</section>
+
+<hr class="sep">
+
+<section id="vieni">
+  <p class="kick">07 · Vieni a vederci</p>
+  <h2>Le cose si capiscono meglio dal vivo.</h2>
+  <p class="lead">Agli open day entri nei laboratori, parli con chi ci studia e con i professori. Si viene in due: tu e un genitore. La prenotazione si fa online, dal sito della scuola.</p>
+  <div class="days" id="days"></div>
+</section>
+
+<div class="foot">
+  IIS «N. Copernico – A. Carpeggiani» · via Pontegradella 25, Ferrara · <a href="https://www.iiscopernico.edu.it" target="_blank" rel="noopener">iiscopernico.edu.it</a><br>
+  Dati dell'anno scolastico 2026/27. Gli orari della prima sono quelli dei nuovi quadri orari.
+</div>
+
+<script>
+(function(){
+'use strict';
+/* ====== DATI (modificare qui) ====== */
+var D = {
+  fatti: [
+    {n:'2', t:'scuole in una: Tecnico e Professionale'},
+    {n:'9', t:'indirizzi tra cui scegliere'},
+    {n:'5', t:'anni, oppure 4 nel percorso quadriennale'},
+    {n:'150+', t:'ore in azienda dal terzo anno'}
+  ],
+  gusti: [
+    {id:'tel', e:'📱', t:'Capire come funziona il telefono'},
+    {id:'gio', e:'🎮', t:'Videogiochi e app'},
+    {id:'luce', e:'💡', t:'Luce, corrente, cose che si accendono'},
+    {id:'robot', e:'🤖', t:'Robot e cose che si muovono da sole'},
+    {id:'sport', e:'⚽', t:'Sport'},
+    {id:'moto', e:'🏍️', t:'Motori e macchine'},
+    {id:'dis', e:'✏️', t:'Disegnare e progettare'},
+    {id:'esp', e:'🧪', t:'Fare esperimenti'},
+    {id:'nat', e:'🌱', t:'Natura e ambiente'},
+    {id:'moda', e:'👕', t:'Vestiti e stile'},
+    {id:'ripara', e:'🔧', t:'Aggiustare le cose'},
+    {id:'occhi', e:'👓', t:'Aiutare le persone a vedere bene'},
+    {id:'energia', e:'☀️', t:'Energia pulita e sole'},
+    {id:'lingue', e:'🌍', t:'Lingue e viaggi'},
+    {id:'subito', e:'💼', t:'Lavorare presto'}
+  ],
+  /* ore: materie dell'indirizzo in prima (le altre 25 sono comuni) */
+  indirizzi: [
+    {id:'info', nome:'Informatica e Telecomunicazioni', where:'ITI', col:'--c-info', obj:'📱',
+     corto:'App, siti, reti, sicurezza: come funziona il digitale, da dentro.',
+     fai:['Programmi le prime app e i primi giochi','Capisci cosa succede dentro un computer','Colleghi computer in rete e li proteggi','Nel triennio puoi scegliere Telecomunicazioni: fibra, WiFi, satelliti'],
+     diventi:['Sviluppatore di software e siti','Amministratore di rete','Tecnico hardware','Esperto di sicurezza informatica','Università: Informatica, Ingegneria'],
+     frase:'Usi il telefono tutti i giorni. Qui impari come funziona dentro, e a costruire le app che ci girano.',
+     ore:[['Informatica e reti',4],['Disegno tecnico',3]],
+     g:{tel:3,gio:3,robot:1,dis:1,lingue:1}},
+    {id:'ele', nome:'Elettrotecnica ed elettronica', where:'ITI', col:'--c-ele', obj:'💡',
+     corto:'Corrente, impianti, domotica e robot: le cose che si accendono.',
+     fai:['Realizzi impianti elettrici veri, in laboratorio','Programmi i controllori delle macchine (PLC)','Costruisci circuiti, domotica, robotica','Nel triennio: Elettrotecnica oppure Elettronica'],
+     diventi:['Tecnico di impianti civili e industriali','Progettista di domotica e robotica','Tecnico di automazione','Università: Ingegneria'],
+     frase:'Premi l’interruttore e la luce si accende. Qui scopri tutto quello che succede in mezzo.',
+     ore:[['Fondamenti di elettrotecnica ed elettronica',4],['Tecnologie informatiche',3]],
+     g:{luce:3,robot:3,ripara:1,energia:1,tel:1}},
+    {id:'esp', nome:'Elettronica · E-Sport', where:'ITI', col:'--c-esp', obj:'⚽',
+     corto:'L’elettronica che incontra lo sport: sensori, dati, movimento.',
+     fai:['Le stesse basi tecniche di Elettrotecnica ed elettronica','Più ore di scienze motorie negli anni successivi','Tecnologia applicata allo sport: sensori, misure, dati'],
+     diventi:['Tecnico elettronico','Tecnico per lo sport e il benessere','Università: Ingegneria, Scienze motorie'],
+     frase:'Lo smartwatch che conta i tuoi passi è elettronica. Qui la studi anche muovendoti.',
+     ore:[['Fondamenti di elettrotecnica ed elettronica',4],['Tecnologie informatiche',3]],
+     g:{sport:3,luce:1,robot:2,gio:1}},
+    {id:'mec', nome:'Meccanica, meccatronica ed energia', where:'ITI', col:'--c-mec', obj:'⚙️',
+     corto:'Progettare al computer e costruire con le macchine.',
+     fai:['Disegni pezzi al computer (CAD)','Li fai produrre da macchine a controllo numerico','Automazione: macchine che si muovono da sole','Nel triennio: Meccanica e meccatronica, oppure Energia'],
+     diventi:['Progettista CAD','Tecnico di produzione e collaudo','Tecnico energetico e delle rinnovabili','ITS o università: Ingegneria'],
+     frase:'Ogni bici, motore o lavatrice è stata prima un disegno. Qui lo fai diventare un oggetto.',
+     ore:[['Fondamenti di meccanica e disegno',2],['Tecnologie dei materiali',2],['Tecnologie informatiche',3]],
+     g:{moto:3,dis:3,robot:2,energia:2,ripara:1}},
+    {id:'chi', nome:'Chimica, materiali e biotecnologie', where:'ITI', col:'--c-chi', obj:'🧪',
+     corto:'Analisi, esperimenti, chimica verde, ambiente e biotecnologie.',
+     fai:['Fai esperimenti e analisi in laboratorio','Scopri di cosa sono fatte le cose','Studi come produrre senza inquinare','Nel triennio: Chimica e materiali, oppure Biotecnologie ambientali'],
+     diventi:['Tecnico di laboratorio','Tecnico ambientale','Industria farmaceutica, cosmetica, alimentare','Università: Chimica, Biotecnologie, professioni sanitarie'],
+     frase:'Creme, farmaci, cibo, l’acqua che bevi: qualcuno li ha analizzati. Quel qualcuno puoi essere tu.',
+     ore:[['Chimica applicata',3],['Tecnologie informatiche',2],['Disegno tecnico',2]],
+     g:{esp:3,nat:3,energia:1}},
+    {id:'moda', nome:'Sistema moda', where:'ITI', col:'--c-moda', obj:'👕',
+     corto:'Dall’idea al capo finito: progettare, confezionare, vendere.',
+     fai:['Disegni capi e accessori','Impari tessuti e tecniche di confezione','Realizzi prototipi in laboratorio','Studi come si porta un prodotto nei negozi'],
+     diventi:['Prototipista e modellista','Responsabile di produzione','Visual merchandiser, buyer','Università e accademie di moda'],
+     frase:'La felpa che hai addosso è passata da un disegno, un tessuto, una macchina e un negozio. Qui li impari tutti.',
+     ore:[['Laboratorio di tecniche creative tessile e moda',4],['Tecnologie informatiche',3]],
+     g:{moda:3,dis:2,lingue:1}},
+    {id:'quad', nome:'Quadriennale Energia', where:'ITI · 4 anni', col:'--c-quad', obj:'☀️',
+     corto:'Diploma in quattro anni, più inglese, tanta energia rinnovabile.',
+     fai:['Finisci in 4 anni invece di 5','35 ore a settimana, con inglese potenziato e madrelingua','Impianti, macchine e sistemi per l’energia','Progetti e laboratori fin dal primo anno'],
+     diventi:['Tecnico energetico','Progettista di impianti','Università, anche all’estero, un anno prima'],
+     frase:'Il sole che colpisce un pannello diventa la luce di casa tua. Qui impari come, in quattro anni.',
+     ore:[['Tecnologie informatiche',3],['Fondamenti di meccanica e disegno',2],['Tecnologie dei materiali',2],['Inglese in più',2],['Italiano in più',1]],
+     tot:35,
+     g:{energia:3,lingue:3,nat:2,moto:1,dis:1}},
+    {id:'mat', nome:'Manutenzione e assistenza tecnica', where:'IPSIA', col:'--c-mat', obj:'🔧',
+     corto:'Installare, riparare, collaudare: il mestiere di chi fa funzionare le cose.',
+     fai:['Lavori su impianti meccanici, elettrici ed elettronici','Impari a trovare i guasti e a ripararli','Tante ore in officina e in azienda'],
+     diventi:['Tecnico manutentore','Installatore di impianti','Operatore di macchine utensili','Corsi ITS'],
+     frase:'Quando una macchina si ferma, tutti chiamano qualcuno. Qui diventi quel qualcuno.',
+     ore:null,
+     g:{ripara:3,subito:3,moto:2,luce:1}},
+    {id:'ott', nome:'Ottico', where:'IPSIA', col:'--c-ott', obj:'👓',
+     corto:'L’unico corso per ottici a Ferrara: occhiali, lenti, vista.',
+     fai:['Misuri la vista e capisci i difetti visivi','Monti occhiali e applichi lenti a contatto','Studi l’occhio e come funziona la visione','Alla fine puoi fare l’esame da ottico abilitato'],
+     diventi:['Ottico abilitato','Tecnico di strumentazione ottica','Università, anche Medicina per diventare oculista'],
+     frase:'Una persona su due porta gli occhiali. Qui impari a far vedere il mondo meglio agli altri.',
+     ore:null,
+     g:{occhi:3,esp:1,subito:2}}
+  ],
+  comuni: [['Italiano',4],['Storia',2],['Inglese',3],['Matematica',4],['Scienze',6],['Diritto ed economia',2],['Scienze motorie',2],['Geografia',1],['Religione o alternativa',1]],
+  anni: [
+    {b:'1ª', s:'si parte', h:'Il primo anno: già dentro il tuo indirizzo', p:'Scegli l’indirizzo quando ti iscrivi. Fin dalla prima hai materie e laboratori tuoi: chimica, fisica, informatica, disegno, lingue.', l:['Laboratori dalla prima settimana','Recupero e aiuto se fai fatica','Il giovedì, attività in più']},
+    {b:'2ª', s:'basi solide', h:'Il secondo anno: le fondamenta', p:'Rafforzi matematica, scienze e lingue e vai più a fondo nelle materie del tuo indirizzo. Alcuni indirizzi si preparano a dividersi in due strade.', l:['Più ore di laboratorio','Attività di orientamento per capire dove andare']},
+    {b:'3ª', s:'si sceglie', h:'Il terzo anno: entri nel mestiere', p:'Le materie diventano specialistiche e cominci la formazione scuola-lavoro: periodi in azienda, con un tutor della scuola e uno dell’azienda.', l:['Laboratori specialistici','Prime esperienze in azienda']},
+    {b:'4ª', s:'sul campo', h:'Il quarto anno: progetti veri', p:'Progetti più grandi, stage, visite in azienda. Nel percorso quadriennale questo è già l’anno del diploma.', l:['Stage, anche estivi','Certificazioni e gare']},
+    {b:'5ª', s:'il diploma', h:'Il quinto anno: la porta è aperta', p:'Esame di Stato e diploma. Con quel diploma puoi lavorare subito, iscriverti a un ITS o a qualsiasi università.', l:['Più della metà dei diplomati va all’università','I tecnici sono richiesti più di quanti ce ne siano']}
+  ],
+  ese: [
+    {id:'fatica', t:'…faccio fatica', s:'in una o più materie', h:'Non resti indietro da solo.', l:['Corsi di recupero al pomeriggio','Pause didattiche per ripassare con calma','«Banca del tempo»: studenti che aiutano altri studenti','Punto di ascolto, per parlare con qualcuno','Supporto per DSA e per chi ha una disabilità']},
+    {id:'bravo', t:'…sono bravo', s:'e voglio mettermi alla prova', h:'Ti diamo dove misurarti.', l:['Olimpiadi di matematica, informatica e chimica','Concorsi nazionali ed europei','Progetti di indirizzo e gare tra scuole']},
+    {id:'mondo', t:'…voglio vedere il mondo', s:'lingue, viaggi, persone', h:'L’inglese è uno strumento, non solo una materia.', l:['Certificazioni linguistiche','Scambi con scuole europee','Visite di istruzione','Nel quadriennale: conversatori madrelingua e stage all’estero']},
+    {id:'altro', t:'…voglio fare altro', s:'oltre le lezioni', h:'La scuola continua dopo la campanella.', l:['Teatro','Attività sportive','Moduli del giovedì del Nuovo tempo scuola','Progetti dei laboratori']},
+    {id:'lavoro', t:'…voglio lavorare presto', s:'e imparare un mestiere', h:'Vai in azienda già da studente.', l:['Formazione scuola-lavoro dal terzo al quinto anno','Un tutor a scuola e uno in azienda','Stage estivi e visite','I diplomati tecnici sono molto richiesti'], hours:true},
+    {id:'uni', t:'…voglio l’università', s:'o non lo so ancora', h:'Il diploma ti apre tutte le porte.', l:['Con il diploma ti iscrivi a qualsiasi facoltà','Più della metà dei nostri diplomati ci va','Ingegneria, Informatica, Chimica, Biotecnologie, professioni sanitarie…','Oppure un ITS: due anni di specializzazione tecnica']}
+  ],
+  faq: [
+    ['È una scuola difficile?','Si studia, come in ogni superiore. La differenza è che se fai fatica non resti solo: recupero al pomeriggio, pause per ripassare, compagni più grandi che ti aiutano. E molte cose si capiscono meglio facendole in laboratorio.'],
+    ['Devo essere già bravo con il computer, la chimica, la meccanica?','No. Si parte da zero. Serve curiosità, non esperienza: è la scuola che ti insegna il resto.'],
+    ['Quando scelgo l’indirizzo?','Quando ti iscrivi. Alcuni indirizzi, dal terzo anno, si dividono in due strade (per esempio Informatica o Telecomunicazioni): lì scegli di nuovo, sapendone molto di più.'],
+    ['E se poi mi accorgo di aver sbagliato?','Succede, e si può cambiare. Nei primi anni le materie di base sono le stesse per tutti, quindi passare a un altro indirizzo è più semplice di quanto pensi. Parlane con i professori.'],
+    ['Ci sono ragazze?','Sì, in tutti gli indirizzi. In alcuni, come Moda, Chimica e Biotecnologie, sono tantissime. Le cose che si imparano qui non hanno un genere.'],
+    ['Quante ore si sta a scuola?','In prima 32 ore a settimana, 35 nel quadriennale. In più il giovedì ci sono due ore di attività aggiuntive nei primi anni.'],
+    ['Dopo posso andare all’università?','Sì, a qualsiasi facoltà. Ma puoi anche lavorare subito: le aziende cercano tecnici diplomati più di quanti ne trovino.'],
+    ['Come faccio a capire se è la scuola giusta per me?','Vieni a un open day: entri nei laboratori, vedi cosa fanno i ragazzi della tua età e fai tutte le domande che vuoi.']
+  ],
+  openday: [
+    {d:'2026-11-07', t:'15:00–16:30 · 17:00–18:30', who:'ITI'},
+    {d:'2026-11-28', t:'15:00–18:30', who:'IPSIA'},
+    {d:'2026-11-29', t:'9:00–10:30 · 11:00–12:30', who:'ITI'},
+    {d:'2026-12-12', t:'15:00–16:30 · 17:00–18:30', who:'ITI'},
+    {d:'2027-01-16', t:'15:00–18:30', who:'IPSIA'},
+    {d:'2027-01-17', t:'9:00–10:30 · 11:00–12:30', who:'ITI'},
+    {d:'2027-01-24', t:'8:30–11:15 · approfondimenti in laboratorio, uno per indirizzo', who:'Per indirizzo'}
+  ]
+};
+
+/* ====== utilità ====== */
+function $(s,r){return (r||document).querySelector(s)}
+function el(tag,attrs,html){var e=document.createElement(tag);if(attrs)for(var k in attrs){if(k==='style')e.style.cssText=attrs[k];else e.setAttribute(k,attrs[k])}if(html!=null)e.innerHTML=html;return e}
+function col(v){return 'var('+v+')'}
+var byId={};D.indirizzi.forEach(function(x){byId[x.id]=x});
+
+/* ====== fatti ====== */
+D.fatti.forEach(function(f){$('#facts').appendChild(el('div',{'class':'fact'},'<b>'+f.n+'</b><span>'+f.t+'</span>'))});
+
+/* ====== quiz ====== */
+var picked={};
+D.gusti.forEach(function(g){
+  var b=el('button',{'class':'chip','aria-pressed':'false',type:'button'},'<span class="e" aria-hidden="true">'+g.e+'</span>'+g.t);
+  b.onclick=function(){picked[g.id]=!picked[g.id];b.setAttribute('aria-pressed',picked[g.id]?'true':'false');var top=renderMatch();if(picked[g.id]&&window.__boom)window.__boom(b,top?col(top.col):null)};
+  $('#chips').appendChild(b);
+});
+var rows={};
+D.indirizzi.forEach(function(x){
+  var r=el('button',{'class':'mrow',type:'button'},'<span class="n">'+x.obj+' '+x.nome+'</span><span class="bar"><i style="background:'+col(x.col)+'"></i></span><span class="p">0%</span>');
+  r.onclick=function(){openDlg(x.id)};
+  rows[x.id]=r;$('#match').appendChild(r);
+});
+function renderMatch(){
+  var ids=Object.keys(picked).filter(function(k){return picked[k]});
+  var sc={},max=0;
+  D.indirizzi.forEach(function(x){var s=0;ids.forEach(function(g){s+=x.g[g]||0});sc[x.id]=s;if(s>max)max=s});
+  var order=D.indirizzi.slice().sort(function(a,b){return sc[b.id]-sc[a.id]});
+  order.forEach(function(x){
+    var r=rows[x.id],p=max?Math.round(sc[x.id]/max*100):0;
+    r.querySelector('i').style.width=p+'%';r.querySelector('.p').textContent=p+'%';
+    $('#match').appendChild(r);
+  });
+  var top=order[0];
+  $('#matchhint').textContent=ids.length?('Il più vicino a te, per ora: '+top.nome+'. Tocca una barra per aprire l’indirizzo. Ricorda: conta quello che provi agli open day, non un punteggio.'):'Scegli almeno una cosa qui sopra.';
+  document.querySelectorAll('.card').forEach(function(c){
+    var id=c.dataset.id;c.classList.toggle('dim',ids.length>0&&sc[id]===0);c.classList.toggle('lit',ids.length>0&&sc[id]===max&&max>0);
+    c.style.borderColor=(ids.length>0&&sc[id]===max&&max>0)?col(byId[id].col):'';
+  });
+  return ids.length?top:null;
+}
+renderMatch();
+
+/* ====== anni ====== */
+D.anni.forEach(function(a,i){
+  var b=el('button',{'class':'yr',type:'button','aria-pressed':i===0?'true':'false'},'<b>'+a.b+'</b><span>'+a.s+'</span>');
+  b.onclick=function(){showYear(i);if(window.__boom)window.__boom(b,null)};$('#road').appendChild(b);
+});
+function showYear(i){
+  var a=D.anni[i];
+  document.querySelectorAll('.yr').forEach(function(b,j){b.setAttribute('aria-pressed',j===i?'true':'false')});
+  $('#yrbox').innerHTML='<h3>'+a.h+'</h3><p>'+a.p+'</p><ul>'+a.l.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';
+}
+showYear(0);
+
+/* ====== carte ====== */
+D.indirizzi.forEach(function(x){
+  var c=el('button',{'class':'card',type:'button','data-id':x.id},
+    '<span class="obj" aria-hidden="true">'+x.obj+'</span><span class="where" style="color:'+col(x.col)+'">'+x.where+'</span><h3>'+x.nome+'</h3><p>'+x.corto+'</p><span class="more">Apri →</span>');
+  c.style.setProperty('--glow',col(x.col));c.onclick=function(){if(window.__boom)window.__boom(c,col(x.col));openDlg(x.id)};
+  $('#grid').appendChild(c);
+});
+
+var dlg=$('#dlg'),cur=0,curTab='fai';
+function openDlg(id){cur=D.indirizzi.findIndex(function(x){return x.id===id});curTab='fai';renderDlg();if(!dlg.open)dlg.showModal()}
+function renderDlg(){
+  var x=D.indirizzi[cur],c=col(x.col);
+  var tabs=[['fai','Cosa fai'],['diventi','Cosa diventi'],['ore','In prima']];
+  var body='';
+  if(curTab==='fai')body='<ul>'+x.fai.map(function(s){return '<li>'+s+'</li>'}).join('')+'</ul>';
+  if(curTab==='diventi')body='<ul>'+x.diventi.map(function(s){return '<li>'+s+'</li>'}).join('')+'</ul>';
+  if(curTab==='ore')body=x.ore?('<p>Oltre alle 25 ore comuni, in prima hai:</p><ul>'+x.ore.map(function(o){return '<li><b>'+o[1]+' ore</b> di '+o[0]+'</li>'}).join('')+'</ul><p style="color:var(--dim)">Totale: '+(x.tot||32)+' ore a settimana. <a href="#settimana" data-week="'+x.id+'">Vedi la settimana →</a></p>'):'<p>All’IPSIA l’orario ha più ore di laboratorio e officina. Il quadro completo te lo mostriamo all’open day.</p>';
+  $('#dlgbody').innerHTML=
+    '<header><span class="obj" aria-hidden="true">'+x.obj+'</span><div><h3 id="dlgt">'+x.nome+'</h3><div class="where" style="color:'+c+'">'+x.where+'</div></div><button class="x" type="button" aria-label="Chiudi">✕</button></header>'+
+    '<div class="tabs" role="tablist">'+tabs.map(function(t){return '<button type="button" role="tab" data-t="'+t[0]+'" aria-selected="'+(t[0]===curTab)+'">'+t[1]+'</button>'}).join('')+'</div>'+
+    '<div class="pane" role="tabpanel">'+body+'<p class="say" style="border-color:'+c+'">'+x.frase+'</p></div>'+
+    '<div class="dlgnav"><button class="btn" type="button" data-nav="-1">← Prima</button><button class="btn" type="button" data-nav="1">Dopo →</button></div>';
+}
+dlg.addEventListener('click',function(e){
+  var t=e.target.closest('[data-t]'),n=e.target.closest('[data-nav]'),w=e.target.closest('[data-week]');
+  if(e.target===dlg||e.target.closest('.x')){dlg.close();return}
+  if(t){curTab=t.dataset.t;renderDlg()}
+  if(n){cur=(cur+(+n.dataset.nav)+D.indirizzi.length)%D.indirizzi.length;renderDlg()}
+  if(w){e.preventDefault();dlg.close();setWeek(w.dataset.week);$('#settimana').scrollIntoView()}
+});
+document.addEventListener('keydown',function(e){if(!dlg.open)return;if(e.key==='ArrowRight'){cur=(cur+1)%D.indirizzi.length;renderDlg()}if(e.key==='ArrowLeft'){cur=(cur-1+D.indirizzi.length)%D.indirizzi.length;renderDlg()}});
+
+/* ====== settimana ====== */
+var weekIds=D.indirizzi.filter(function(x){return x.ore}).map(function(x){return x.id});
+var shades=['','0.95','0.7','0.5','0.35','0.25'];
+weekIds.forEach(function(id){
+  var x=byId[id];
+  var b=el('button',{type:'button','aria-pressed':'false'},x.obj+' '+x.nome.split(',')[0].split(' e ')[0]);
+  b.onclick=function(){setWeek(id);if(window.__boom)window.__boom(b,col(x.col))};b.dataset.id=id;$('#weekctl').appendChild(b);
+});
+function setWeek(id){
+  var x=byId[id],tot=x.tot||32,own=0;
+  x.ore.forEach(function(o){own+=o[1]});
+  document.querySelectorAll('#weekctl button').forEach(function(b){var on=b.dataset.id===id;b.setAttribute('aria-pressed',on);b.style.background=on?col(x.col):'';b.style.color=on?'var(--ink)':''});
+  var w=$('#week');w.innerHTML='';
+  var common=tot-own;
+  for(var i=0;i<common;i++)w.appendChild(el('div',{'class':'h'}));
+  var k=0;
+  x.ore.forEach(function(o,j){for(var h=0;h<o[1];h++){var d=el('div',{'class':'h own'});d.style.background=col(x.col);d.style.opacity=j===0?'1':(j===1?'.72':(j===2?'.5':'.38'));w.appendChild(d);k++}});
+  var cells=w.children;for(var c=common;c<cells.length;c++){(function(n,dl){n.style.transform='scale(.4)';setTimeout(function(){n.style.transform=''},40+dl*35)})(cells[c],c-common)}
+  $('#weeklegend').innerHTML='<span><i style="background:var(--c-com)"></i><b>'+common+' ore</b> uguali per tutti</span>'+x.ore.map(function(o,j){return '<span><i style="background:'+col(x.col)+';opacity:'+(j===0?1:(j===1?.72:(j===2?.5:.38)))+'"></i><b>'+o[1]+'</b> '+o[0]+'</span>'}).join('');
+  $('#weeksum').innerHTML='In <b>'+x.nome+'</b> hai <b>'+own+' ore tue</b> su '+tot+'.'+(x.tot?' Il quadriennale ha più ore perché finisce un anno prima.':' Le materie comuni sono: '+D.comuni.map(function(c){return c[0]+' '+c[1]}).join(', ')+'.');
+}
+setWeek('info');
+
+/* ====== e se ====== */
+D.ese.forEach(function(s,i){
+  var b=el('button',{'class':'if',type:'button','aria-pressed':i===0?'true':'false'},s.t+'<small>'+s.s+'</small>');
+  b.onclick=function(){showIf(i);if(window.__boom)window.__boom(b,null)};$('#ifs').appendChild(b);
+});
+function showIf(i){
+  var s=D.ese[i];
+  document.querySelectorAll('.if').forEach(function(b,j){b.setAttribute('aria-pressed',j===i?'true':'false')});
+  var h='<h3>'+s.h+'</h3><ul>'+s.l.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';
+  if(s.hours)h+='<div class="hours"><div><div class="lbl">ITI · ore in azienda (3ª–5ª)</div><div class="track"><i data-w="71"></i></div><div class="v">150 ore</div></div><div><div class="lbl">IPSIA · ore in azienda (3ª–5ª)</div><div class="track"><i data-w="100"></i></div><div class="v">210 ore</div></div></div>';
+  $('#ifbox').innerHTML=h;
+  setTimeout(function(){document.querySelectorAll('.track i').forEach(function(t){t.style.width=t.dataset.w+'%'})},30);
+}
+showIf(0);
+
+/* ====== domande ====== */
+D.faq.forEach(function(q){$('#faq').appendChild(el('details',null,'<summary>'+q[0]+'</summary><p>'+q[1]+'</p>'))});
+
+/* ====== open day ====== */
+var GG=['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'],MM=['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
+var oggi=new Date();oggi.setHours(0,0,0,0);
+var whoCol={'ITI':'--c-info','IPSIA':'--c-mat','Per indirizzo':'--c-quad'};
+D.openday.forEach(function(o){
+  var p=o.d.split('-'),dt=new Date(+p[0],+p[1]-1,+p[2]);
+  var c=el('div',{'class':'day'+(dt<oggi?' past':'')},'<div class="d">'+(+p[2])+' '+MM[+p[1]-1]+'</div><div class="w">'+GG[dt.getDay()]+' '+p[0]+'</div><div class="t">'+o.t+'</div><span class="who" style="background:'+col(whoCol[o.who])+'">'+o.who+'</span>');
+  $('#days').appendChild(c);
+});
+
+
+/* ====== fuochi d'artificio ====== */
+var cv=$('#fx'),cx=cv.getContext('2d'),DPR=Math.min(2,window.devicePixelRatio||1),W=0,H=0;
+var PAL=D.indirizzi.map(function(x){return getComputedStyle(document.documentElement).getPropertyValue(x.col).trim()});
+var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function size(){W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;cx.setTransform(DPR,0,0,DPR,0,0)}
+size();addEventListener('resize',size);
+var dust=[],sparks=[],mx=-999,my=-999;
+for(var i=0;i<(W<700?55:110);i++)dust.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.8+.6,c:PAL[i%PAL.length]});
+addEventListener('pointermove',function(e){mx=e.clientX;my=e.clientY},{passive:true});
+function burst(x,y,c,n){if(RM)return;n=n||60;for(var i=0;i<n;i++){var a=Math.random()*Math.PI*2,v=Math.random()*5+1.5;sparks.push({x:x,y:y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-1.5,life:1,c:c||PAL[(Math.random()*PAL.length)|0],r:Math.random()*2.2+1})}}
+window.__burst=burst;window.__boom=function(e,c){boomAt(e,c)};
+addEventListener('pointerdown',function(e){if(e.target.closest('button,a,summary,dialog'))return;burst(e.clientX,e.clientY,null,45)});
+var scrollY0=scrollY;
+function tick(){
+  cx.clearRect(0,0,W,H);
+  var dy=(scrollY-scrollY0)*.15;scrollY0=scrollY;
+  for(var i=0;i<dust.length;i++){var p=dust[i];
+    var ddx=p.x-mx,ddy=p.y-my,d2=ddx*ddx+ddy*ddy;
+    if(d2<14000){var f=(14000-d2)/14000*.9;p.vx+=ddx/Math.sqrt(d2+1)*f;p.vy+=ddy/Math.sqrt(d2+1)*f}
+    p.vx*=.96;p.vy*=.96;p.x+=p.vx+(Math.random()-.5)*.15;p.y+=p.vy-dy;
+    if(p.x<0)p.x+=W;if(p.x>W)p.x-=W;if(p.y<0)p.y+=H;if(p.y>H)p.y-=H;
+    cx.globalAlpha=.55;cx.fillStyle=p.c;cx.beginPath();cx.arc(p.x,p.y,p.r,0,7);cx.fill();
+  }
+  cx.globalCompositeOperation='lighter';
+  for(var j=sparks.length-1;j>=0;j--){var s=sparks[j];s.vy+=.09;s.vx*=.985;s.vy*=.985;s.x+=s.vx;s.y+=s.vy;s.life-=.016;
+    if(s.life<=0){sparks.splice(j,1);continue}
+    cx.globalAlpha=s.life;cx.fillStyle=s.c;cx.beginPath();cx.arc(s.x,s.y,s.r*s.life+.4,0,7);cx.fill();
+    cx.globalAlpha=s.life*.25;cx.beginPath();cx.arc(s.x,s.y,s.r*4*s.life,0,7);cx.fill();}
+  cx.globalCompositeOperation='source-over';cx.globalAlpha=1;
+  requestAnimationFrame(tick);
+}
+if(!RM)requestAnimationFrame(tick);else{tick=function(){};}
+function resolve(c){if(!c)return null;var m=/var\((--[^)]+)\)/.exec(c);return m?getComputedStyle(document.documentElement).getPropertyValue(m[1]).trim():c}
+function boomAt(elm,c){c=resolve(c);var r=elm.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,c,70)}
+setTimeout(function(){var h=$('.hero h1').getBoundingClientRect();PAL.forEach(function(c,i){setTimeout(function(){burst(h.left+Math.random()*h.width,h.top+Math.random()*h.height,c,35)},i*140)})},500);
+
+/* ====== comparsa progressiva ====== */
+if('IntersectionObserver' in window&&!RM){
+  var rv=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');rv.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('section > h2, section > .lead, .grid .card, .two .half, .facts .fact, .days .day, .faq details, .road, .ifs').forEach(function(n,i){n.classList.add('reveal');n.style.transitionDelay=((i%6)*60)+'ms';rv.observe(n)});
+}
+
+/* ====== menu attivo ====== */
+var links=[].slice.call(document.querySelectorAll('.top a'));
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)})}})},{rootMargin:'-45% 0px -50% 0px'});
+  document.querySelectorAll('section[id]').forEach(function(s){io.observe(s)});
+}
+})();
+</script>
+</body>
+</html>
