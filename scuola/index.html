@@ -329,12 +329,12 @@ var D = {
      diventi:['Programmatore','Esperto di reti','Tecnico che ripara computer','Università: Informatica, Ingegneria'],
      frase:'Usi il telefono ogni giorno. Qui impari come funziona e come si costruiscono le app.',
      ore:[['Informatica e reti',4],['Disegno tecnico',3]]},
-    {id:'qinfo', nome:'Quadriennale Informatica', where:'ITI · 4 anni', pal:['#38e1ff','#7a7dff'], obj:'🚀',
+    {id:'qinfo', nome:'Quadriennale Informatica', where:'ITI · 4 anni', pal:['#38e1ff','#7a7dff','#b6f3ff','#ff9de2','#ffd36e'], obj:'🚀',
      corto:'Il diploma di informatica in quattro anni.',
      fai:['Le stesse cose di Informatica, in un anno in meno','Robot, intelligenza artificiale, grandi quantità di dati','Alcune ore anche online, da casa'],
      diventi:['Programmatore, esperto di reti, di robot','Università un anno prima dei tuoi coetanei'],
      frase:'Stesso diploma, un anno prima: per chi ha voglia di cominciare presto.',
-     ore:null},
+     ore:[['Informatica',5],['Disegno tecnico',2],['Italiano in più',1],['Inglese in più',1],['Matematica in più',1]], tot:34, nota:'Geografia si fa in seconda.'},
     {id:'ele', nome:'Elettrotecnica ed elettronica', where:'ITI · 5 anni', pal:['#ffd84a','#ff8a1f'], obj:'💡',
      corto:'Corrente, impianti, robot, casa intelligente.',
      fai:['Costruisci impianti elettrici veri, in laboratorio','Programmi le macchine perché lavorino da sole','Costruisci circuiti e piccoli robot','Dal terzo anno: Elettrotecnica oppure Elettronica'],
@@ -461,8 +461,8 @@ var D = {
     ['Apertura', ['Nome, classe, indirizzo','Perché ho scelto questa scuola: una frase vera']],
     ['La scuola', ['Due scuole: ITI (Tecnico) e IPSIA (Professionale), unite dal 2012','Sede in via Pontegradella 25, Ferrara','5 anni; due percorsi in 4 anni: Quadriennale Informatica e Quadriennale Energia','Laboratori fin dalla prima: chimica, fisica, informatica, disegno','Si sceglie la strada all’iscrizione']],
     ['Le dieci strade', ['ITI: Informatica e Telecomunicazioni · Elettrotecnica ed elettronica · Elettronica E-Sport · Meccanica, meccatronica ed energia · Chimica, materiali e biotecnologie · Sistema moda','ITI quadriennali: Informatica · Energia','IPSIA: Manutenzione e assistenza tecnica (motori, impianti, macchine) · Ottico','Ottico: unico a Ferrara e dintorni, poco più di 20 in Italia; esame per diventare ottico abilitato','Dal terzo anno alcune si dividono: Informatica/Telecomunicazioni, Elettrotecnica/Elettronica, Meccanica/Energia, Chimica/Biotecnologie','Per ogni strada: un oggetto che conoscono (telefono, luce, bici, crema, felpa, occhiali)']],
-    ['La settimana in prima', ['32 ore: 25 uguali per tutti + 7 della propria strada','Quadriennale Energia: 35 ore','Mostrare i quadratini che si accendono']],
-    ['Informatica (la nostra demo)', ['Demo di 1 minuto','Collegare a Informatica, Sistemi e reti, TPSIT con parole semplici: programmare, collegare, costruire']],
+    ['La settimana in prima', ['32 ore: 25 uguali per tutti + 7 della propria strada','Quadriennali: 34 ore Informatica, 35 ore Energia (finiscono un anno prima)','Mostrare i quadratini che si accendono']],
+    ['Informatica (la nostra demo)', ['Demo di 1 minuto','Collegare a Informatica, Sistemi e reti, TPSIT con parole semplici: programmare, collegare, costruire','Informatica si può fare anche in 4 anni: Quadriennale Informatica (robot, intelligenza artificiale, dati; qualche ora online)','Dal terzo anno: Informatica oppure Telecomunicazioni']],
     ['Oltre le lezioni', ['Certificazione Cambridge di inglese: utilissima per lavoro e università','Esperienze in azienda dal terzo anno: 150 ore all’ITI, 210 all’IPSIA, con due tutor','Stage estivi e visite in azienda','Attività sportive e gare','Teatro, progetti, gite, scambi europei','Olimpiadi di matematica, informatica, chimica','Recupero pomeridiano, Banca del tempo, sportello di ascolto, supporto per difficoltà di apprendimento']],
     ['Dopo il diploma', ['Qualsiasi università (più della metà dei diplomati ci va)','Corsi di specializzazione post-diploma','Lavoro subito: i tecnici sono richiesti più di quanti ce ne siano']],
     ['Chiusura', ['Date open day: ITI 7/11, 29/11, 12/12, 17/1 · IPSIA 28/11, 16/1 · per indirizzo 24/1','Prenotazione online dal sito della scuola, si viene con un genitore','Mostrare il QR della prenotazione','Se non sai una risposta: «te la spiegano all’open day»']]
@@ -559,7 +559,7 @@ function setWeek(id){
   var w=$('#week');w.innerHTML='';
   for(var i=0;i<tot-own;i++)w.appendChild(el('div',{'class':'h'}));
   var n=0;x.ore.forEach(function(o,j){for(var h=0;h<o[1];h++){var d=el('div',{'class':'h'});d.style.background=x.pal[j%x.pal.length];d.style.transform='scale(.3)';w.appendChild(d);(function(d,k){setTimeout(function(){d.style.transform=''},60+k*45)})(d,n++)}});
-  $('#legend').innerHTML='<span><i style="background:var(--com)"></i><b>'+(tot-own)+'</b> uguali per tutti</span>'+x.ore.map(function(o,j){return '<span><i style="background:'+x.pal[j%x.pal.length]+'"></i><b>'+o[1]+'</b> '+o[0]+'</span>'}).join('')+'<span style="flex-basis:100%;font-size:.95rem">Uguali per tutti: '+D.comuni+'.</span>';
+  $('#legend').innerHTML='<span><i style="background:var(--com)"></i><b>'+(tot-own)+'</b> uguali per tutti</span>'+x.ore.map(function(o,j){return '<span><i style="background:'+x.pal[j%x.pal.length]+'"></i><b>'+o[1]+'</b> '+o[0]+'</span>'}).join('')+'<span style="flex-basis:100%;font-size:.95rem">Uguali per tutti: '+D.comuni+'.'+(x.nota?' '+x.nota:'')+'</span>';
 }
 setWeek('info');
 
